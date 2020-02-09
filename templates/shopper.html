@@ -1,19 +1,21 @@
 {% extends "base.html" %}
 {% block title %}
+    {{super()}}
     {% if shopper_name %}
         Shopper {{shopper_name}}
     {% endif %}
 {% endblock title%}
-{% block head %}
-    {{ super() }}
-{% endblock head %}
 
-{% block body %}
+{% block navbar %}
+    {{ super() }}
+{% endblock navbar %}
+
+{% block content %}
     <h1>
         {% if shopper_name %}
-            Store Page for {{shopper_name}}
+            Shopper Page for {{shopper_name}}
         {% else %}
-            Store Page for NOT A STORE
+            Shopper Page for NOT A STORE
         {% endif %}
     </h1>
-{% endblock body %}
+{% endblock %}
