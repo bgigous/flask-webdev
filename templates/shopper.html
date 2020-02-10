@@ -2,7 +2,7 @@
 {% block title %}
     {{super()}}
     {% if shopper_name %}
-        Shopper {{shopper_name}}
+        - Shopper {{shopper_name}}
     {% endif %}
 {% endblock title%}
 
@@ -10,7 +10,7 @@
     {{ super() }}
 {% endblock navbar %}
 
-{% block content %}
+{% block page_content %}
     <h1>
         {% if shopper_name %}
             Shopper Page for {{shopper_name}}

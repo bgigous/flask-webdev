@@ -51,6 +51,7 @@ Navbar isn't showing up (nor is title inheriting) because: I was not inheriting 
 
 CSS Styling is missing for bootstrap in base template which has a navbar. ultimately because of `block head`...
 
+error.html inherits from base.html but it won't add margin to the content... Oh, it's not a page_content which is why
 
 
 
@@ -63,7 +64,7 @@ CSS Styling is missing for bootstrap in base template which has a navbar. ultima
 
 
 
-Rought Time Breakdown
+Rough Time Breakdown
 =====================
 
 Video production takes longer than expected
