@@ -53,6 +53,34 @@ CSS Styling is missing for bootstrap in base template which has a navbar. ultima
 
 error.html inherits from base.html but it won't add margin to the content... Oh, it's not a page_content which is why
 
+The templates we made go from server to user. Great for getting information _to_ us, but obviously we need to tell the server stuff, right? GET is server -> user, POST is user -> server. These things are called requests. POST requests give server access to user information, like login info and personal details and favorite flavor of ice cream.
+
+Making form components with HTML is straightforward, but then there's validating. And then how the heck do we make sure the user input is valid? For example, "wood" isn't exactly a flavor of ice cream... and hang on, how do we connect all this to python???
+
+For that we have flask-wtf! It makes making forms easy! (Don't let the name fool you)
+
+But there's one quick thing we need to do first. If I want complete secrecy as to my own fav flavor of ice cream, to only confide it to the server, the framework has to make sure the data sent is *encrypted*. introducing the secret key (we'll add in configuration)
+(use external links to encourage students to dive in further)
+
+(be able to explain what the FlaskForm/Form class definitions mean/ the breakdown)
+
+Alright, now let's define the form "look" in a template
+Remember the long spiel about security? There's a little more to do: hidden_tag() is needed for Flask-WTF to implement CSRF protection. Basically, you'll want to include it because it's important! Blah blah blah
+
+You can even define ids in your form so that you can define CSS styles for them, within the template
+
+To make our life easier, we're gonna use Flask-Bootstraps predefined CSS styles. That way, we don't have to cringe at a form that looks like it came from the Internet of the 90's, we can have a cool modern look right outta the box (`import "bootstrap/wtf.html" as wtf`, `wtf.quick_form(form)`, `form` is a variable, and we don't have to define the form fields individually)
+
+Wait a sec, what's with this "Method not allowed" message? Of course it's allowed! I just put the form in there! Oh, wait. It's talking about the [what GET/POST things are called] methods! Let's add those to our route decorator. view functions are only GET by default. More about POST... And upon POST, what happens with the `validate_on_submit` and validation...
+
+We never want to repeat a form submission if the user refreshes, so we'll prevent that with a `redirect`
+
+
+
+
+
+
+
 
 
 
