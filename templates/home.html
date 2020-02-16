@@ -5,7 +5,13 @@
 
 {% block page_content %}
 <h1>Welcome to Plaza, {% if name %}{{name}}{% else %}Anonymous{% endif %}!</h1>
-<p>Here's your content</p>
+<div class="page-header">
+    {% if not known %}
+    <p>Mucho gusto! (Nice to meet you!)</p>
+    {% else %}
+    <p>Here's your content</p>
+    {% endif %}
+</div>
 {{ wtf.quick_form(form) }}
 {% endblock page_content %}
 
