@@ -7,6 +7,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms import SubmitField
 from wtforms.validators import DataRequired
+from flask import session
+from flask import redirect
+from flask import flash
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "the hardest string to guess 3v4r"
@@ -21,14 +24,15 @@ class NameForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    name = None
     form = NameForm()
     if form.validate_on_submit():
         # save entered name
-        name = form.name.data
+        session['name'] = form.name.data
+        # flash a message
+        flash('Great! We hope you enjoy the community')
         # clear input
-        form.name.data = ''
-    return render_template('home.html', form=form, name=name)
+        return redirect(url_for('home'))
+    return render_template('home.html', form=form, name=session.get('name'))
 
 
 @app.route('/shopper/<shopper_name>')
