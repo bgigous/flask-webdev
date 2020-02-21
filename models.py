@@ -4,13 +4,13 @@ class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    users = db.relationship('Shopper', backref='role')
+    users = db.relationship('Fan', backref='role')
     def __repr__(self):
         return '<Role %r>' % self.name
 
 
-class Shopper(db.Model):
-    __tablename__ = 'shoppers'
+class Fan(db.Model):
+    __tablename__ = 'fans'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
@@ -19,4 +19,4 @@ class Shopper(db.Model):
 
 
     def __repr__(self):
-        return '<Shoppper %r>' % self.username
+        return '<Fan %r>' % self.username

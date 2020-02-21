@@ -21,7 +21,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] =\
     'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
-from models import Role, Shopper
+from models import Role, Fan
 
 bootstrap = Bootstrap(app)
 
@@ -33,7 +33,7 @@ class NameForm(FlaskForm):
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, Shopper=Shopper, Role=Role)
+    return dict(db=db, Fan=Fan, Role=Role)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -41,10 +41,10 @@ def home():
     form = NameForm()
     if form.validate_on_submit():
         name_entered = form.name.data
-        shopper = Shopper.query.filter_by(username=name_entered).first()
-        if shopper is None:
-            shopper = Shopper(username=name_entered)
-            db.session.add(shopper)
+        fan = Fan.query.filter_by(username=name_entered).first()
+        if fan is None:
+            fan = Fan(username=name_entered)
+            db.session.add(fan)
             db.session.commit()
             session['known'] = False
         else:
@@ -64,14 +64,14 @@ def home():
         known=session.get('known', False))
 
 
-@app.route('/shopper/<shopper_name>')
-def shopper(shopper_name):
-    return render_template('shopper.html', shopper_name=shopper_name)
+@app.route('/fan/<fan_name>')
+def fan(fan_name):
+    return render_template('fan.html', fan_name=fan_name)
 
 
-@app.route('/store/<store_name>')
-def store(store_name):
-    return render_template('store.html', store_name=store_name)
+@app.route('/artist/<artist_name>')
+def artist(artist_name):
+    return render_template('artist.html', artist_name=artist_name)
 
 
 @app.errorhandler(404)

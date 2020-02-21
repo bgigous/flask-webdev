@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}
     {{super()}}
-    {% if shopper_name %}
-        - Shopper {{shopper_name}}
+    {% if fan_name %}
+        - Fan {{fan_name}}
     {% endif %}
 {% endblock title%}
 
@@ -12,10 +12,10 @@
 
 {% block page_content %}
     <h1>
-        {% if shopper_name %}
-            Shopper Page for {{shopper_name}}
+        {% if fan_name %}
+            Fan Page for {{fan_name}}
         {% else %}
-            Shopper Page for NOT A STORE
+            Fan Page for NOT A STORE
         {% endif %}
     </h1>
 {% endblock %}
