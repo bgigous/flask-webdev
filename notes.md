@@ -137,10 +137,45 @@ So since we're exited, we really miss those python objects. It's real easy to ge
 
 Then once you have a query object from one of those, there are different ways of getting the data that comes out. Check out theses other "executors" (not as deadly as it might seem): [all, first, get, etc]
 
+alright, so our problem earlier... So of course we need to add more columns to our database models so that we can build our app. But the problem is, so far, to do that we have to drop all tables and our data goes away. To fix that, we'll support "migration" which is a fancy way of saying, "Make scripts that can make the necessary changes to the database, and that can also _move_ the data to we already have as needed." Or something. It keeps track of how the database schema changes.
 
+(Does sound kinda cool right? See the data in its natural habitat, doing its migrations as usual. I was inspired by that one NG guy's voice)
+
+`pip install flask-migrate`
+
+add Migrate and init it in our python code, like so []. After Migrate installs, it adds a `flask db init` command we can run in the CLI. Run it now, k?
+
+You'll see that it creates a migrations directory, that's where all the migration scripts are.
+
+in Alembic a migration is represented as a migration script. Al has two functions called `upgrade()` and `downgrade()`, and they apply the database changes that are part of the migration and removes them, respectively. (am I grammaring right?)
+
+The procedures that one must follow in order for a successful migration:
+
+1. make changes to the model classes
+2. create an automatic migration script with `flask db migrate`
+3. review the script, adjust it so that it acc reflects changes made to models
+4. add the script to source code (!)
+5. then run `flask db upgrade` to apply the migration
+
+    "For a first migration, this is effectively equivalent to calling db.create_all() , but in
+successive migrations the flask db upgrade command applies updates to the tables
+without affecting their contents."
+
+Make sure *ALL* changes to your models are reflected in your migration scripts! Otherwise any `upgrade()` commands won't reflect what changes you ultimately made (and the result might look strange).
+
+Pretty much everyone goes shopping. Except maybe not your Uncle Steve, who fends for himself out in the woods and hunts his own food. Anyway that's why all users who sign up are "shoppers"
 
 Pretty much everyone goes shopping. Except maybe not your Uncle Steve, who fends for himself out in the woods and hunts his own food.
 Anyway that's why all users who sign up are "shoppers"
+
+I ADDED FLASK_APP=ragtime.py TO BASHRC SCRIPT FOR CONVENIENCE
+
+*[Skipping email for later]*
+
+Scaling Up
+=========
+
+(need my other sections sectioned, lol)
 
 
 
