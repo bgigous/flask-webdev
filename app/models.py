@@ -7,7 +7,7 @@ class Role(db.Model):
     users = db.relationship('Fan', backref='role')
 
     def __repr__(self):
-        return '<Role %r>' % self.name
+        return f'<Role {self.name}>'
 
 
 class Fan(db.Model):
@@ -19,10 +19,9 @@ class Fan(db.Model):
     #password = db.Column(db.String(64), unique=True, index=True)
 
     def __repr__(self):
-        return f'<Fan {self.name}>'
+        return f'<Fan {self.username}>'
 
 
-"""
 class Manager(Fan):
     __tablename__ = 'managers'
     fan_id = db.Column(db.Integer, db.ForeignKey('fans.id'))
@@ -36,5 +35,4 @@ class Artist(Fan):
     display_name = db.Column(db.String(64), unique=False)
 
     def __repr__(self):
-        return '<Artist %r>' % self.alias
-"""
+        return f'<Artist {self.alias}>'
