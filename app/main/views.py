@@ -2,7 +2,7 @@ from flask import session, render_template, redirect, url_for, flash
 from . import main
 from .forms import NameForm
 from .. import db
-from ..models import Fan, Role, Artist, Manager
+from ..models import Fan, Role
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
@@ -23,7 +23,7 @@ def home():
         flash('Great! We hope you enjoy the community')
         # clear input
         form.name.data
-        return redirect(url_for('home'))
+        return redirect(url_for('.home'))
     return render_template(
         'home.html',
         form=form,
@@ -37,6 +37,12 @@ def fan(fan_name):
     return render_template('fan.html', fan_name=fan_name)
 
 
+@main.route('/base')
+def base():
+    return render_template('base.html')
+
+"""
 @main.route('/artist/<artist_name>')
 def artist(artist_name):
     return render_template('artist.html', artist_name=artist_name)
+"""

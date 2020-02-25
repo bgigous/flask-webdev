@@ -177,9 +177,23 @@ Scaling Up
 
 (need my other sections sectioned, lol)
 
+Work through config, then __init__.py in app, then main/__init__.py blueprint, then __init__.py again to include main blueprint, then errors in main blueprint, then views in main bp, then the ragtime.py to create_app()
 
+What's `KeyError: <flask.cli.ScriptInfo object at 0x7ff35a039a58>`????
 
+not sure, but the reason we don't have bootstrap is BECAUSE I LITERAlly HADA no inteERNET
 
+the `url_for()` must change to either "main.index" or ".index"
+
+for error handlers in a blueprint, we must use `app_errorhandler` decorator for app-wide error handling
+
+now we introduce the config class. Or should we say classes. Flask allows us to load a configuration as a class, which means we can create a class and define CONSTANTS within it to pass our settings to the app. We can even put multiple configuration classes inside a file and use a dictionary to "name" each one. In our case These names are actually values we define in our factory, which you'll see later (that last sentence might not be quite right)
+
+we make a folder app and putting most of the files in there because this is the way of the app factory. It uses the factory pattern aka the `create_app` function. we're making a flask app inside a package. with this factory, we can put in any configuration we want and get out a flask app that uses that configuration. the only drawback is that we can't change the configuration dynamically anymore. Our package is called `app`. This encasulates everything in a folder, and we can load the config from outside.
+
+Made main/__init__.py because that's where the Blueprint is born. imports views and errors from there. We'll use this module to register our blueprint later
+
+views and errors.py go in a folder `main`, as well as our form class. These views, error handlers, and forms are all part of the blueprint. Theoretically, our blueprint is in a dormant state until we register with our flask app. It's a bit like a keyboard or mouse, where the devices are dormant until we plug them into the computer. So once we register our bp, our views come to life! Error handlers actually need the `app_` to make them work app wide. We import our form in the views module. Note the `main` folder is also a python package, but it's within a package
 
 
 

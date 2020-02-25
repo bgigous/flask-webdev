@@ -22,6 +22,7 @@ class Fan(db.Model):
         return f'<Fan {self.username}>'
 
 
+"""
 class Manager(Fan):
     __tablename__ = 'managers'
     fan_id = db.Column(db.Integer, db.ForeignKey('fans.id'))
@@ -36,3 +37,4 @@ class Artist(Fan):
 
     def __repr__(self):
         return f'<Artist {self.alias}>'
+"""
