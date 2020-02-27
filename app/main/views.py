@@ -32,6 +32,7 @@ def home():
         known=session.get('known', False))
 
 
+# Not included until later, in user roles or something
 @main.route('/fan/<fan_name>')
 def fan(fan_name):
     return render_template('fan.html', fan_name=fan_name)
@@ -46,3 +47,7 @@ def base():
 def artist(artist_name):
     return render_template('artist.html', artist_name=artist_name)
 """
+
+# @login_required
+# def review():
+#     pass
