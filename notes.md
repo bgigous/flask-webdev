@@ -201,11 +201,27 @@ User Authentication
 
 Will not use login_required decorator in this section, doesn't make sense to restrict users to plain pages (we don't have fan page yet, let's say)
 
+##### how flask-login works
+1. user clicks "Log in" to navigate login page and is presented (by the handler for the URL) with the form
+2. User enters info. Upon Submit, same handler is invoked again, but now as a POST instead of GET
+    a. Handler validates the creds, then invokes `login_user()` to log user in
+    b. login_user() func writes ID of user to USER SESSION (not a const) as a string
+    c. view func returns with redirect to homepage
+3. browser receives the redirect and requests home page
+    a. view func for home is invoked, triggers main Jinja2 template
+    b. during rendering of template, a reference to current_user appears for the first time
+    c. current_user context variable then invokes `_get_user_()` to find who current user is
+    d. `_get_user()` function checks if there's a userID stored in user session. If there's none, returns instance of AnonymousUser. If there is an ID, the `user_loader` decorated function
+    e. user_loader handler reads the user from the database and returns it
+    f. template receives the newly assigned value of current_user
+
+I'm thinking "Fan" will be confusing at first so I might want to use User for everything else...
 
 
+##### for testing
+Made a tests/ folder for pytest tests. Only had to use `python -m pytest tests/` and then fix the import/module errors to get it to work
 
-
-
+NOTE cannot really use `pytest` as the above works well
 
 
 
