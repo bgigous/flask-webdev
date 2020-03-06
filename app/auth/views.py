@@ -1,7 +1,8 @@
-from flask import render_template, url_for, redirect, url_for, flash, request
+from flask import render_template, url_for, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user
 from . import auth
 from .forms import LoginForm, RegistrationForm
+from ..email import send_email
 from ..models import Fan
 from .. import db
 
@@ -38,5 +39,12 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash("Coolio. Now you can login.")
+        # since form input is valid (not an existing user, etc),
+        # we can send them a welcome email
+        if current_app.config['RAGTIME_ADMIN']:
+            send_email(current_app.config['RAGTIME_ADMIN'],
+                        'New User',
+                        'mail/new_user',
+                        user=user)
         return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form=form)

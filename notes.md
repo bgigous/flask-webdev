@@ -1,10 +1,13 @@
-Notes
-=====
+Begin Notes
+===========
 
 Hello web world:
     Try making more routes
     Try putting some html in (headers, links...)
     what if we return a number
+
+Some Template Stuff
+===================
 
 I added a function with no route, that's probably something a student would do
 and I tried rendering template without importing
@@ -45,7 +48,7 @@ doesn't work. it will put Shopper whatever in the html doc
 after extending base.html, I try putting content after blocks title and head (not in a block) and it doesn't show
 putting it in a block does allow it to show
 
-comments screw things up if before jinja (the <!-- kind>)
+comments screw things up if before jinja (the `<!--` kind>)
 
 Try some other bootstrap template blocks!
 
@@ -55,7 +58,13 @@ Navbar isn't showing up (nor is title inheriting) because: I was not inheriting 
 
 CSS Styling is missing for bootstrap in base template which has a navbar. ultimately because of `block head`...
 
+Error Handling
+==============
+
 error.html inherits from base.html but it won't add margin to the content... Oh, it's not a page_content which is why
+
+Forms
+=====
 
 The templates we made go from server to user. Great for getting information _to_ us, but obviously we need to tell the server stuff, right? GET is server -> user, POST is user -> server. These things are called requests. POST requests give server access to user information, like login info and personal details and favorite flavor of ice cream.
 
@@ -63,10 +72,15 @@ Making form components with HTML is straightforward, but then there's validating
 
 For that we have flask-wtf! It makes making forms easy! (Don't let the name fool you)
 
+Secret Key
+----------
 But there's one quick thing we need to do first. If I want complete secrecy as to my own fav flavor of ice cream, to only confide it to the server, the framework has to make sure the data sent is *encrypted*. introducing the secret key (we'll add in configuration)
 (use external links to encourage students to dive in further)
 
 (be able to explain what the FlaskForm/Form class definitions mean/ the breakdown)
+
+Templates
+---------
 
 Alright, now let's define the form "look" in a template
 Remember the long spiel about security? There's a little more to do: hidden_tag() is needed for Flask-WTF to implement CSRF protection. Basically, you'll want to include it because it's important! Blah blah blah
@@ -75,7 +89,13 @@ You can even define ids in your form so that you can define CSS styles for them,
 
 To make our life easier, we're gonna use Flask-Bootstraps predefined CSS styles. That way, we don't have to cringe at a form that looks like it came from the Internet of the 90's, we can have a cool modern look right outta the box (`import "bootstrap/wtf.html" as wtf`, `wtf.quick_form(form)`, `form` is a variable, and we don't have to define the form fields individually)
 
+GET and POST
+------------
+
 Wait a sec, what's with this "Method not allowed" message? Of course it's allowed! I just put the form in there! Oh, wait. It's talking about the [what GET/POST things are called] methods! Let's add those to our route decorator. view functions are only GET by default. More about POST... And upon POST, what happens with the `validate_on_submit` and validation...
+
+Redirects and Message Flashing
+----------
 
 We never want to repeat a form submission if the user refreshes, so we'll prevent that with a `redirect`
 
@@ -223,6 +243,33 @@ Made a tests/ folder for pytest tests. Only had to use `python -m pytest tests/`
 
 NOTE cannot really use `pytest` as the above works well
 
+Fixtures go in conftest.py. Their scope can be defined using `@pytest.fixture(scope='function')` or "module/session/class"
+
+##### more notes on user auth
+
+Password security is no joke because if a breach occurs on your app, you could expose your users' passwords to the attackers. Lots of users use the same password for multiple sites, so that's trouble. So how can you protect your users easily, but effectively?
+
+Password hashing is a common solution to this problem. a hashing function takes a plaintext password as input, applies some randomness to it (the salt), then applies several one-way crypto transformations to it. What comes out is a new sequence of characters that look nothing like the original. We use werkzeugs functions for hashing
+
+
+Email verification
+===========
+
+Flask-Mail uses SMTP for email sending/delivery. There's different configuration keys you can use including `localhost` listed here: [list]
+
+Sending mail from the shell: import Message, then compose message, a body, and html body then you can send within app_context()
+
+let's make a new file email.py in the top app directory to define a function to send the email
+
+Let's have the app email us when a new user signs up. (explain why current_app goes in `home()` view func) (also warning could get annoying so don't pick a good email)
+
+actually no that won't go in the home form, but the register form me things I"LL HAVE TO FIGURE THIS OUT TOMORROW F$%# I think we're gonna remove the form on home() because it's not useful anymore
+
+To enable SMTP connections in GMail, you'll wanna go to your Google Security Settings. as of this writing it's at: https://myaccount.google.com/security . Then, turn ON "less secure app access." Don't worry too much about the "less secure" part as Google just wants you to use OAuth2 or something. (This is fine though, right? Probably want to offer some alternatives to python's `smtplib`)
+
+You'll also need to enable two factor authentication, then create an app password. Kinda confusing but once you get that, you'll be all set to send emails from your SECONDARY account
+
+send_email() in email.py, along with importing `mail` from app and current_app.
 
 
 

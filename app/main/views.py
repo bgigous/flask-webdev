@@ -1,14 +1,17 @@
-from flask import session, render_template, redirect, url_for, flash
+from flask import session, render_template, redirect, url_for, flash, current_app
 from . import main
 from .forms import NameForm
 from .. import db
 from ..models import Fan, Role
+from ..email import send_email
 
 @main.route('/', methods=['GET', 'POST'])
 def home():
     form = NameForm()
     if form.validate_on_submit():
         name_entered = form.name.data
+
+        # DOES THIS STILL BELONG HERE?!@?
         fan = Fan.query.filter_by(username=name_entered).first()
         if fan is None:
             fan = Fan(username=name_entered)
