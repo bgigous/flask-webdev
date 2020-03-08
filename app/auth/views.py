@@ -42,6 +42,10 @@ def register():
         # since form input is valid (not an existing user, etc),
         # we can send them a welcome email
         if current_app.config['RAGTIME_ADMIN']:
+            send_email(form.email.data,
+                        'Welcome to Ragtime!',
+                        'mail/welcome',
+                        user=user)
             send_email(current_app.config['RAGTIME_ADMIN'],
                         'New User',
                         'mail/new_user',

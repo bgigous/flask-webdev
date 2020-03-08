@@ -50,6 +50,7 @@ putting it in a block does allow it to show
 
 comments screw things up if before jinja (the `<!--` kind>)
 
+the reason we don't have bootstrap is BECAUSE I LITERAlly HADA no inteERNET
 Try some other bootstrap template blocks!
 
 Pasting base.html template from microblog git repo
@@ -103,10 +104,21 @@ As you can see with the redirect, hitting refresh after submitting the name does
 
 Putting flashed messages in the base template ensures you don't have to repeat putting your flashed messages into other templates. And we use a loop because there might be more than one message to display at a time
 
+Database Management
+===================
 
 What's a model? A model is basically [I need a way to describe this...]. The models are the objects that your webapp interacts with to get the data it needs and update data as needed. If say a user logs in , the webapp will need to load the information on the user so that the user sees nothing but what they expeect for the app.
 
 If they register a new account, that means you'll add that information to the database. There are lots of other info that needs to be tracked with that user. The great thing about relational databases is that *relationships* can be formed between the data. Each user will have a *role* in the application, and that relationship between role and user can be defined with [].
+
+SQLAlchemy vs Flask-SQLAlchemy
+------------------------------------
+
+Installation & Configuration
+-----------------
+
+Defining the Models And Their Relationships
+-------------------------------
 
 There are many relationship options you can use, and each has a different behavior/use case. (Try some in a lab)
 
@@ -114,9 +126,12 @@ create_all() can't be called again if the models need to be changed because the 
 
 But don't worry, there's a way to update your models without destroying all the information that exists! We'll discover this magical solution together later, but for now let's talk about how to get data in the tables in the first place.
 
+Interacting With Our Models in the CLI
+----------------------------------------------
+
 To do that we're going to use the convenient `flask shell` command to interact with our database one command at a time (what?).
 
-(Do you need a backref to a foreign key in the other table)
+(Do you need a backref to a foreign key in the other table?)
 
 for inserting users into our database with sample usernames, []. "Note that the role attribute can be used, even though it is not a real data‐
 base column but a high-level representation of the one-to-many relationship."
@@ -128,7 +143,7 @@ However, we haven't inserted these values into the database yet. We've only crea
 Before we do that, understand that values must be inserted in the [context or something] of a database session. This way you can line up a bunch of commands to execute, and when you're ready to actually insert them, you'll `commit` those commands. let's get the values ready
 
 ```
-[add commands
+[add commands]
 ```
 
 we could also have done `db.session.add([...])`, then commit()
@@ -157,7 +172,13 @@ So since we're exited, we really miss those python objects. It's real easy to ge
 
 Then once you have a query object from one of those, there are different ways of getting the data that comes out. Check out theses other "executors" (not as deadly as it might seem): [all, first, get, etc]
 
-alright, so our problem earlier... So of course we need to add more columns to our database models so that we can build our app. But the problem is, so far, to do that we have to drop all tables and our data goes away. To fix that, we'll support "migration" which is a fancy way of saying, "Make scripts that can make the necessary changes to the database, and that can also _move_ the data to we already have as needed." Or something. It keeps track of how the database schema changes.
+Trying Out Our Models in a View Function
+----------------------------------------
+
+Database Migration with Flask-Migrate
+-------------------------------------
+
+Alright, so our problem earlier... So of course we need to add more columns to our database models so that we can build our app. But the problem is, so far, to do that we have to drop all tables and our data goes away. To fix that, we'll support "migration" which is a fancy way of saying, "Make scripts that can make the necessary changes to the database, and that can also _move_ the data to we already have as needed." Or something. It keeps track of how the database schema changes.
 
 (Does sound kinda cool right? See the data in its natural habitat, doing its migrations as usual. I was inspired by that one NG guy's voice)
 
@@ -166,6 +187,9 @@ alright, so our problem earlier... So of course we need to add more columns to o
 add Migrate and init it in our python code, like so []. After Migrate installs, it adds a `flask db init` command we can run in the CLI. Run it now, k?
 
 You'll see that it creates a migrations directory, that's where all the migration scripts are.
+
+When And How to Perform Migrations
+---------------------------------------------
 
 in Alembic a migration is represented as a migration script. Al has two functions called `upgrade()` and `downgrade()`, and they apply the database changes that are part of the migration and removes them, respectively. (am I grammaring right?)
 
@@ -177,16 +201,14 @@ The procedures that one must follow in order for a successful migration:
 4. add the script to source code (!)
 5. then run `flask db upgrade` to apply the migration
 
-    "For a first migration, this is effectively equivalent to calling db.create_all() , but in
+    "For a first migration, this is effectively equivalent to calling db.create_all(), but in
 successive migrations the flask db upgrade command applies updates to the tables
 without affecting their contents."
 
 Make sure *ALL* changes to your models are reflected in your migration scripts! Otherwise any `upgrade()` commands won't reflect what changes you ultimately made (and the result might look strange).
 
-Pretty much everyone goes shopping. Except maybe not your Uncle Steve, who fends for himself out in the woods and hunts his own food. Anyway that's why all users who sign up are "shoppers"
 
-Pretty much everyone goes shopping. Except maybe not your Uncle Steve, who fends for himself out in the woods and hunts his own food.
-Anyway that's why all users who sign up are "shoppers"
+Pretty much everyone goes shopping. Except maybe not your Uncle Steve, who fends for himself out in the woods and hunts his own food. Anyway that's why all users who sign up are "Fans"
 
 I ADDED FLASK_APP=ragtime.py TO BASHRC SCRIPT FOR CONVENIENCE
 
@@ -195,26 +217,42 @@ I ADDED FLASK_APP=ragtime.py TO BASHRC SCRIPT FOR CONVENIENCE
 Scaling Up
 =========
 
-(need my other sections sectioned, lol)
-
 Work through config, then __init__.py in app, then main/__init__.py blueprint, then __init__.py again to include main blueprint, then errors in main blueprint, then views in main bp, then the ragtime.py to create_app()
 
-What's `KeyError: <flask.cli.ScriptInfo object at 0x7ff35a039a58>`????
+Project Structure
+---------
 
-not sure, but the reason we don't have bootstrap is BECAUSE I LITERAlly HADA no inteERNET
+Basic Configuration
+------------
+now we introduce the config class. Or should we say classes. Flask allows us to load a configuration as a class, which means we can create a class and define CONSTANTS within it to pass our settings to the app. We can even put multiple configuration classes inside a file and use a dictionary to "name" each one. In our case These names are actually values we define in our factory, which you'll see later (that last sentence might not be quite right)
 
-the `url_for()` must change to either "main.index" or ".index"
+We'll define more configurations later.
+
+Application Factory
+------
+we make a folder app and putting most of the files in there because this is the way of the app factory. It uses the factory pattern aka the `create_app` function. we're making a flask app inside a package. with this factory, we can put in any configuration we want and get out a flask app that uses that configuration. the only drawback is that we can't change the configuration dynamically anymore. Our package is called `app`. This encasulates everything in a folder, and we can load the config from outside.
+
+Blueprints
+---------
 
 for error handlers in a blueprint, we must use `app_errorhandler` decorator for app-wide error handling
 
-now we introduce the config class. Or should we say classes. Flask allows us to load a configuration as a class, which means we can create a class and define CONSTANTS within it to pass our settings to the app. We can even put multiple configuration classes inside a file and use a dictionary to "name" each one. In our case These names are actually values we define in our factory, which you'll see later (that last sentence might not be quite right)
+Creating the Main Blueprint
+-----------------------------
 
-we make a folder app and putting most of the files in there because this is the way of the app factory. It uses the factory pattern aka the `create_app` function. we're making a flask app inside a package. with this factory, we can put in any configuration we want and get out a flask app that uses that configuration. the only drawback is that we can't change the configuration dynamically anymore. Our package is called `app`. This encasulates everything in a folder, and we can load the config from outside.
+the `url_for()` must change to either "main.index" or ".index"
 
 Made main/__init__.py because that's where the Blueprint is born. imports views and errors from there. We'll use this module to register our blueprint later
 
 views and errors.py go in a folder `main`, as well as our form class. These views, error handlers, and forms are all part of the blueprint. Theoretically, our blueprint is in a dormant state until we register with our flask app. It's a bit like a keyboard or mouse, where the devices are dormant until we plug them into the computer. So once we register our bp, our views come to life! Error handlers actually need the `app_` to make them work app wide. We import our form in the views module. Note the `main` folder is also a python package, but it's within a package
 
+More Configurations
+-------------------------
+
+production development testing
+
+Laying the Foundation for Future Work
+-------------------------------------
 
 User Authentication
 ==========================
@@ -263,7 +301,7 @@ let's make a new file email.py in the top app directory to define a function to 
 
 Let's have the app email us when a new user signs up. (explain why current_app goes in `home()` view func) (also warning could get annoying so don't pick a good email)
 
-actually no that won't go in the home form, but the register form me things I"LL HAVE TO FIGURE THIS OUT TOMORROW F$%# I think we're gonna remove the form on home() because it's not useful anymore
+actually no that won't go in the home form, but the register form me things. I think we're gonna remove the form on home() because it's not useful anymore
 
 To enable SMTP connections in GMail, you'll wanna go to your Google Security Settings. as of this writing it's at: https://myaccount.google.com/security . Then, turn ON "less secure app access." Don't worry too much about the "less secure" part as Google just wants you to use OAuth2 or something. (This is fine though, right? Probably want to offer some alternatives to python's `smtplib`)
 
@@ -271,9 +309,33 @@ You'll also need to enable two factor authentication, then create an app passwor
 
 send_email() in email.py, along with importing `mail` from app and current_app.
 
+Verification
+-------------
 
+Some applications like to verify that their users have valid information. The most common requirements apps ask of users is to verify their email. We'll have our app do the same so we can show you how it's done. For each new user, we'll mark the account as unconfirmed until a link in the email is clicked.
 
+A confirmation link might be as simple as www.website.com/auth/confirm/id where id is the users id in the database. Once the link is clicked in email, the view function that handles that URL will know what the userid is and can then mark that user as confirmed. But that's not a secure implementation because anyone can just take the link in the email and change the id to anything. That's not secure, but we can make it secure very easily. Confirmation tokens can help us do that, and we'll use itsdangerous package.
 
+A confirmation token will replace the id with something a lot more cryptic and undecypherable to a person but that only our app can generate and understand. We [didn't yet] discuss earlier that user sessions are actually protected by signed cookies. These cookies contain a signature generated by itsdangerous.
+
+Let's demonstrate the package's ability to generate one of these
+
+```
+>>> from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+>>> s = Serializer(app.config['SECRET_KEY'], expires_in=3600)
+>>> token = s.dumps({ 'icecream': 'wood' })
+>>> token
+b'eyJhbGciOiJIUzUxMiIsImlhdCI6MTU4MzcwOTc4NiwiZXhwIjoxNTgzNzEzMzg2fQ.eyJpY2VjcmVhbSI6Indvb2QifQ.ffG5SQcwTXFON0RA0VUk_HgiS2VCmyf0niH2VHdGjbra7p83hVtr0fmTCpmhLbqI1q7Vtq3KGXiqZnci28jE8Q'
+>>> data = s.loads(token)
+>>> data
+{'icecream': 'wood'}
+```
+
+`dumps` generates a crypto signature for the data given. Data is serialized and the signature as a neat little token string. `expires_in` is in seconds
+
+`loads()` method takes token, outputs original data if the exp time and signature are both valid
+
+Let's add a confirm to our User model
 
 
 
