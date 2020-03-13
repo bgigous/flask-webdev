@@ -286,6 +286,10 @@ Fixtures go in conftest.py. Their scope can be defined using `@pytest.fixture(sc
 ##### more notes on user auth
 
 Password security is no joke because if a breach occurs on your app, you could expose your users' passwords to the attackers. Lots of users use the same password for multiple sites, so that's trouble. So how can you protect your users easily, but effectively?
+=======
+Need to explain why the development vs production setup is the way it is
+
+brief intro on testing? at this point?
 
 Password hashing is a common solution to this problem. a hashing function takes a plaintext password as input, applies some randomness to it (the salt), then applies several one-way crypto transformations to it. What comes out is a new sequence of characters that look nothing like the original. We use werkzeugs functions for hashing
 
