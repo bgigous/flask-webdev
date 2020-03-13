@@ -335,14 +335,19 @@ b'eyJhbGciOiJIUzUxMiIsImlhdCI6MTU4MzcwOTc4NiwiZXhwIjoxNTgzNzEzMzg2fQ.eyJpY2VjcmV
 
 `loads()` method takes token, outputs original data if the exp time and signature are both valid
 
-Let's add a confirm to our User model
+Let's add a confirmed column to our User model. `generate_confirmation_token()` takes an expiration in seconds and returns the generated token. `confirm()` verifies the token, if valid it will set the `confirmed` attribute to True
 
+SQLAlchemy OperationalError from config not creating testing database (not filled in) (MAYBE NOT). Adding Environ gets to config for database names
 
+learned that conftest doesn't work right inside classes
 
+We use `_external` in the url_for function to indicate that we want fully qualified url, meaning the https:// or http://, hostname and port
 
+when we make before_app_request: if the user's logged in and is not in the auth blueprint, the app will catch this in the if statement we made, then will show the "unconfirmed" page. They have to have an unconfirmed account ofc
 
+We can send email asynchronously so we don't have to wait for the server to send the email. Basically what happens is we start a new thread to process sending the email so our app can focus on doing web things, like responding to the client. Cool huh?
 
-
+    Miguels async email example didn't work. THIS saved my butt. We get the app object itself https://www.reddit.com/r/flask/comments/5jrrsu/af_appapp_context_in_thread_throws_working/
 
 
 

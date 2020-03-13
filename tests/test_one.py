@@ -1,6 +1,8 @@
 import pytest
 from flask import current_app
 from app import create_app, db
+from app.models import Fan, Role
+from app.email import send_email
 
 # @pytest.fixture(scope='module')
 # def new_app():
@@ -40,11 +42,47 @@ class TestFlaskApp():
         assert current_app
         assert current_app.config['TESTING']
 
-print('before use of fixture')
+def test_mine(new_app):
+    pass
+
 
 #@pytest.mark.usefixtures('new_app')
-class TestUserAuth(new_app):
-    def test_tua001_fixture(self):
-        assert app
-        with app.app_context():
-            assert current_app
+class TestUserAuth():
+
+    def test_tua001_add_user(self, new_app):
+        u = Fan(email='john@example.com', username='john', password='cat')
+        db.session.add(u)
+        db.session.commit()
+
+    def test_tua002_test_has_hash(self, new_app):
+        u = Fan.query.first()
+        assert u.password_hash is not None
+
+    def test_tua003_test_login(self, new_app):
+        u = Fan.query.first()
+        assert not u.verify_password('catcat')
+        assert u.verify_password('cat')
+
+    def test_tua004_getter_throws(self, new_app):
+        u = Fan.query.first()
+        try:
+            u.password
+            assert False
+        except AttributeError:
+            pass # passes test if here
+        except:
+            assert False
+
+    def test_tua005_salt_is_random(self, new_app):
+        u1 = Fan(password="cat")
+        u2 = Fan(password="cat")
+        assert u1.password_hash != u2.password_hash
+
+    def test_tua005_token_valid(self, new_app):
+        u = Fan.query.first()
+        token = u.generate_confirmation_token()
+        assert u.confirm(token)
+
+
+    # def __del__(self):
+    #     teardown(self.app_context)

@@ -1,5 +1,5 @@
 from flask import render_template, url_for, redirect, url_for, flash, request, current_app
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user, login_required
 from . import auth
 from .forms import LoginForm, RegistrationForm
 from ..email import send_email
@@ -41,14 +41,64 @@ def register():
         flash("Coolio. Now you can login.")
         # since form input is valid (not an existing user, etc),
         # we can send them a welcome email
+        send_email(form.email.data,
+                    'Welcome to Ragtime!',
+                    'mail/welcome',
+                    user=user)
+        flash("We sent you a confirmation email! Click the link in the email to confirm your account.")
+        send_email(form.email.data,
+                    'Confirm Your Account',
+                    'mail/confirm',
+                    user=user,
+                    token=user.generate_confirmation_token())
         if current_app.config['RAGTIME_ADMIN']:
-            send_email(form.email.data,
-                        'Welcome to Ragtime!',
-                        'mail/welcome',
-                        user=user)
             send_email(current_app.config['RAGTIME_ADMIN'],
                         'New User',
                         'mail/new_user',
                         user=user)
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('main.home'))
     return render_template('auth/register.html', form=form)
+
+
+@auth.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        flash("You're already confirmed, silly!")
+        return redirect(url_for('main.home'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('You have confirmed your account! Thank you.')
+    else:
+        flash("Whoops! That confirmation link either expired, or it isn't valid.")
+    return redirect(url_for('main.home'))
+
+
+@auth.before_app_request
+def before_request():
+    if current_user.is_authenticated \
+            and not current_user.confirmed \
+            and request.blueprint != 'auth' \
+            and request.endpoint != 'static':
+        return redirect(url_for('auth.unconfirmed'))
+
+
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.home'))
+    return render_template('auth/unconfirmed.html')
+
+
+@auth.route('/confirm')
+@login_required
+def resend_confirmation():
+    token = current_user.generate_confirmation_token()
+    send_email(current_user.email,
+        'Confirm Your Account',
+        'auth/email/confirm',
+        user=current_user,
+        token=token)
+    current_app.logger.debug("Resent confirmation email")
+    flash("We sent a new confirmation email! Please check your inbox.")
+    return redirect(url_for('main.home'))

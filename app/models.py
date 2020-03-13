@@ -1,7 +1,10 @@
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from itsdangerous import TimedJSONWebSignatureSerializer as WebSerializer
 from . import db
 from . import login_manager
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -20,7 +23,7 @@ class Fan(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
-    #password = db.Column(db.String(64), unique=True, index=True)
+    confirmed = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f'<Fan {self.username}>'
@@ -35,6 +38,24 @@ class Fan(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def generate_confirmation_token(self, expiration_sec=3600):
+        s = WebSerializer(current_app.secret_key, expiration_sec)
+        return s.dumps({'confirm_id': self.id}).decode('utf-8')
+
+    def confirm(self, token):
+        s = WebSerializer(current_app.secret_key)
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        # Matches the logged in user
+        if data.get('confirm_id') != self.id:
+            return False
+        self.confirmed = True
+        db.session.add(self)
+        # Don't commit yet! We'll make sure it's legit when we go to the /commit page
+        return True
 
 
 @login_manager.user_loader
