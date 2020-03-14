@@ -3,7 +3,7 @@ from flask_login import login_user, logout_user, current_user, login_required
 from . import auth
 from .forms import LoginForm, RegistrationForm
 from ..email import send_email
-from ..models import Fan
+from ..models import User
 from .. import db
 
 
@@ -11,7 +11,7 @@ from .. import db
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = Fan.query.filter_by(email=form.email.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
@@ -33,7 +33,7 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = Fan(email=form.email.data,
+        user = User(email=form.email.data,
                    username=form.username.data,
                    password=form.password.data)
         db.session.add(user)

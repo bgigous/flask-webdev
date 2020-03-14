@@ -354,9 +354,32 @@ We can send email asynchronously so we don't have to wait for the server to send
     Miguels async email example didn't work. THIS saved my butt. We get the app object itself https://www.reddit.com/r/flask/comments/5jrrsu/af_appapp_context_in_thread_throws_working/
 
 
+User Roles
+==========
 
+intro
+-----
 
+Sometimes an app with users might have only one "role" for every user (use the site the same exact way! Kinda boring right?). Some apps might have just two roles, perhaps a regular ol' user who can do a select few things in a webapp, and an administrator who can manage content and resources created by users or the admins themselves (`is_admin` in user model). But often there are *roles* with *permissions* that are in between regular user and admin such as moderators, who might have powers similar to admin but more limited. The virtual sky is the limit, as long as it can be coded.
 
+~~Even some other times, permissions depend on *what page* a user visits. That will be true in our web app! And we'll see how to handle that [if that's even worth going into detail here]~~
+
+Not sure where this goes
+-----
+(Me going on a tangent)
+
+Now as we continue to build our app out, we may need to migrate occasionally
+
+```bash
+$ flask db migrate
+INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
+INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
+ERROR [root] Error: Target database is not up to date.
+```
+
+Oh my. Probably because I changed the name of my models, or as it says my database not "up to date." If this happens to you, you may have to delete your migrations folder and try again with `flask db init`. I also deleted my database or dropped all tables or something, so obviously we'd only migrate if we're *running* the website in production from epoch 0
+
+I will keep my old on in source control but will do `db init`
 
 
 

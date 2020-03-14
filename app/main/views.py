@@ -2,7 +2,7 @@ from flask import session, render_template, redirect, url_for, flash, current_ap
 from . import main
 from .forms import NameForm
 from .. import db
-from ..models import Fan, Role
+from ..models import User, Role
 from ..email import send_email
 
 @main.route('/', methods=['GET', 'POST'])
@@ -12,10 +12,10 @@ def home():
         name_entered = form.name.data
 
         # DOES THIS STILL BELONG HERE?!@?
-        fan = Fan.query.filter_by(username=name_entered).first()
-        if fan is None:
-            fan = Fan(username=name_entered)
-            db.session.add(fan)
+        user = User.query.filter_by(username=name_entered).first()
+        if user is None:
+            user = User(username=name_entered)
+            db.session.add(user)
             db.session.commit()
             session['known'] = False
         else:
@@ -36,21 +36,7 @@ def home():
 
 
 # Not included until later, in user roles or something
-@main.route('/fan/<fan_name>')
+# TODO: Gotta decide what to do here
+@main.route('/<fan_name>')
 def fan(fan_name):
     return render_template('fan.html', fan_name=fan_name)
-
-
-@main.route('/base')
-def base():
-    return render_template('base.html')
-
-"""
-@main.route('/artist/<artist_name>')
-def artist(artist_name):
-    return render_template('artist.html', artist_name=artist_name)
-"""
-
-# @login_required
-# def review():
-#     pass
