@@ -6,6 +6,10 @@ Hello web world:
     Try putting some html in (headers, links...)
     what if we return a number
 
+Forgot
+======
+`moment.include_moment()` in base.html until user profile
+
 Some Template Stuff
 ===================
 
@@ -385,8 +389,9 @@ I will keep my old on in source control but will do `db init`
 
 Also, I forgot `lazy='dynamic'` and I don't know how to explain. And I think in general I'll have to keep the same users as before like john because it'll get confusing which ones we have or not
 
+Now that we've updated User Profile, migration
 
-
+**homework idea add field to reconfirm a different email but where you have to put password in first**
 
 
 Rough Time Breakdown

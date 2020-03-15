@@ -8,11 +8,7 @@
     {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Anonymous{% endif %}!
 </h1>
 <div class="page-header">
-    {% if not known %}
-    <p>Mucho gusto! (Nice to meet you!)</p>
-    {% else %}
-    <p>Here's your content</p>
-    {% endif %}
+    <p>Enjoy your stay.</p>
 </div>
 {# {{ wtf.quick_form(form) }} #}
 {% endblock page_content %}

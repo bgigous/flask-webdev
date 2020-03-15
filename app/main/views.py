@@ -2,6 +2,7 @@ from flask import session, render_template, redirect, url_for, flash, current_ap
 from flask_login import login_required, current_user
 from . import main
 from .forms import NameForm, EditProfileForm
+from .. import db
 from ..models import User, Role, Permission
 from ..email import send_email
 from ..decorators import admin_required, permission_required
@@ -39,7 +40,7 @@ def home():
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', username=username)
+    return render_template('user.html', user=user)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
