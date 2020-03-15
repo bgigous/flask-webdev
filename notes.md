@@ -146,6 +146,8 @@ Before we do that, understand that values must be inserted in the [context or so
 [add commands]
 ```
 
+(don't forget about lazy)
+
 we could also have done `db.session.add([...])`, then commit()
 
 (Probably good to explain the difference between the flask session and db session)
@@ -381,38 +383,7 @@ Oh my. Probably because I changed the name of my models, or as it says my databa
 
 I will keep my old on in source control but will do `db init`
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Also, I forgot `lazy='dynamic'` and I don't know how to explain. And I think in general I'll have to keep the same users as before like john because it'll get confusing which ones we have or not
 
 
 

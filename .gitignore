@@ -1,0 +1,5 @@
+env/
+__pycache__
+email.sh
+data*.sqlite
+__pycache__

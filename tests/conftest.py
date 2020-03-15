@@ -1,5 +1,6 @@
 import pytest
 from app import create_app, db
+from app.models import Role
 
 print("LOADING CONFTEST")
 
@@ -26,3 +27,8 @@ def new_app():
     db.session.remove()
     db.drop_all()
     ctx.pop()
+
+@pytest.fixture(scope='function')
+def roles():
+    Role.insert_roles()
+    yield

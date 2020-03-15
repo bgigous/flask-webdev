@@ -10,6 +10,9 @@ from .. import db
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    # We don't want user to see this page if they are already logged in
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
@@ -48,7 +51,7 @@ def register():
         flash("We sent you a confirmation email! Click the link in the email to confirm your account.")
         send_email(form.email.data,
                     'Confirm Your Account',
-                    'mail/confirm',
+                    'auth/email/confirm',
                     user=user,
                     token=user.generate_confirmation_token())
         if current_app.config['RAGTIME_ADMIN']:
@@ -76,11 +79,14 @@ def confirm(token):
 
 @auth.before_app_request
 def before_request():
-    if current_user.is_authenticated \
-            and not current_user.confirmed \
-            and request.blueprint != 'auth' \
-            and request.endpoint != 'static':
-        return redirect(url_for('auth.unconfirmed'))
+    if current_user.is_authenticated:
+        current_user.ping()
+        # ? we add check for endpoint is something in profile section
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.blueprint != 'auth' \
+                and request.endpoint != 'static':
+            return redirect(url_for('auth.unconfirmed'))
 
 
 @auth.route('/unconfirmed')
