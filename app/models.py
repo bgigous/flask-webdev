@@ -1,3 +1,4 @@
+import hashlib
 from datetime import datetime
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
@@ -23,13 +24,26 @@ class Permission:
     ADMIN = 16
 
 
+class ReleaseType:
+    """
+    Permission model for defining permissions of the app
+        FOLLOW - User can follow other users
+        REVIEW - User can write reviews for compositions
+        PUBLISH - Uesr can publish compositions
+        MODERATE - User can moderate reviews (edit, delete)
+        ADMIN - User can do everything
+    """
+    SINGLE = 0
+    EXTENDED_PLAY = 1
+    ALBUM = 2
+
+
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True)
     default = db.Column(db.Boolean, default=False, index=True)
     users = db.relationship('User', backref='role', lazy='dynamic')
-
     # XXX: Why doesn't this set permissions to 0? default=0
     permissions = db.Column(db.Integer)
 
@@ -96,6 +110,8 @@ class User(UserMixin, db.Model):
     location = db.Column(db.String(64))
     bio = db.Column(db.Text())
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
+    avatar_hash = db.Column(db.String(32))
+    compositions = db.relationship('Composition', backref='artist', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -110,6 +126,9 @@ class User(UserMixin, db.Model):
             # otherwise, it's just a plain old user
             if self.role == None:
                 self.role = Role.query.filter_by(default=True).first()
+
+        if self.email is not None and self.avatar_hash is None:
+            self.avatar_hash = self.email_hash()
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -156,6 +175,15 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
+    # We use this to prevent
+    def email_hash(self):
+        return hashlib.md5(self.email.lower().encode('utf-8')).hexdigest()
+
+    def unicornify(self, size=128):
+        url = 'https://unicornify.pictures/avatar'
+        hash = self.avatar_hash or self.email_hash()
+        return f'{url}/{hash}?s={size}'
+
 
 class AnonymousUser(AnonymousUserMixin):
     def can(self, perm):
@@ -163,6 +191,19 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
+
+
+class Composition(db.Model):
+    """What our database holds"""
+    __tablename__ = 'compositions'
+    id = db.Column(db.Integer, primary_key=True)
+    # 0 for single, 1 for ep, 2 for album
+    release_type = db.Column(db.Integer)
+    title = db.Column(db.String(64))
+    description = db.Column(db.Text)
+    description_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 login_manager.anonymous_user = AnonymousUser

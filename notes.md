@@ -9,6 +9,12 @@ Hello web world:
 Forgot
 ======
 `moment.include_moment()` in base.html until user profile
+LinkedIn uses Flask
+
+Homework Ideas
+======
+`moment.include_moment()` in base.html until user profile
+LinkedIn uses Flask
 
 Some Template Stuff
 ===================

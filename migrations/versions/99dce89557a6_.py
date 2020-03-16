@@ -1,7 +1,7 @@
-"""empty message
+"""add profile info to User model, drops fans
 
 Revision ID: 99dce89557a6
-Revises: adds profile info to User model, drops fans
+Revises:
 Create Date: 2020-03-15 13:27:21.421300
 
 """

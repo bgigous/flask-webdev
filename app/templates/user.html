@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block title %}
     {{super()}}
-    {% if fan_name %}
-        - Fan {{fan_name}}
+    {% if username %}
+        - User {{ username }}
     {% endif %}
 {% endblock title%}
 
@@ -12,6 +12,7 @@
 
 {% block page_content %}
 {{ super() }}
+<img class="img-rounded profile-thumbnail" src="{{ user.unicornify() }}">
 <div class="page-header">
     <h1>{{ user.username }}</h1>
     <table>
@@ -33,6 +34,9 @@
 
     {% if user == current_user %}
         <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">Edit</a>
+    {% endif %}
+    {% if current_user.is_administrator() %}
+        <a class="btn btn-danger" href="{{ url_for('.edit_profile_admin', id=user.id) }}">Edit as Admin</a>
     {% endif %}
 </div>
 {% endblock %}
