@@ -111,18 +111,10 @@ class TestUserRoles():
     def test_tur006_new_user_perms(self):
         Role.insert_roles()
         u = User(name='john', password='cat', email='john@johnnyboy.com', confirmed=True)
+        assert u.can(Permission.FOLLOW)
+        assert u.can(Permission.REVIEW)
+        assert u.can(Permission.PUBLISH)
         assert not u.can(Permission.MODERATE)
-
-
-    def test_tur005(self):
-        pass
-    def test_tur006(self):
-        pass
-    def test_tur007(self):
-        pass
-    def test_tur008(self):
-        pass
-    def test_tur009(self):
-        pass
-    def test_tur010(self):
-        pass
+        assert not u.can(Permission.ADMIN)
+        assert u.role.default
+        assert u.role.name == 'User'
