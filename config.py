@@ -15,6 +15,8 @@ class Config():
     RAGTIME_MAIL_SUBJECT_PREFIX = 'Ragtime —'
     RAGTIME_MAIL_SENDER = 'Ragtime Admin <ragtime.incorporated@gmail.com'
 
+    RAGTIME_COMPS_PER_PAGE = 20
+
     @staticmethod
     def init_app(app):
         pass

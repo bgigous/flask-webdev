@@ -1,4 +1,4 @@
-from flask import session, render_template, redirect, url_for, flash, current_app
+from flask import session, render_template, redirect, url_for, flash, current_app, request
 from flask_login import login_required, current_user
 from . import main
 from .forms import NameForm, EditProfileForm, EditProfileAdminForm, CompositionForm
@@ -21,18 +21,29 @@ def home():
         db.session.add(composition)
         db.session.commit()
         return redirect(url_for('.home'))
-    compositions = Composition.query.order_by(Composition.timestamp.desc()).all()
+    # page number to render, from request's query string 'page',
+    # with default of first page (1), and if type can't be int,
+    # return default value
+    page = request.args.get('page', 1, type=int)
+    # Which page of results do you want? We'll display <per_page> results, and won't
+    # throw an error if you go outside how many pages we have!
+    pagination = Composition.query.order_by(Composition.timestamp.desc()).paginate(
+        page, per_page=current_app.config['RAGTIME_COMPS_PER_PAGE'], error_out=False)
+    compositions = pagination.items
+    # A ?page=2 will display in address when page selected is 2
     return render_template(
         'home.html',
         form=form,
-        compositions=compositions
+        compositions=compositions,
+        pagination=pagination
     )
 
 
 @main.route('/user/<username>')
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
-    return render_template('user.html', user=user)
+    compositions = user.compositions.order_by(Composition.timestamp.desc()).all()
+    return render_template('user.html', user=user, compositions=compositions)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])
