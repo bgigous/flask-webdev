@@ -14,6 +14,6 @@ def internal_server_error(e):
 
 
 @main.app_errorhandler(403)
-def internal_server_error(e):
+def forbidden(e):
     error_msg="This page is forbidden, you're not supposed to be here."
     return render_template("error.html", error_msg=error_msg), 403
