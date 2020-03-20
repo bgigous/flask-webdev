@@ -13,7 +13,7 @@ class Config():
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     RAGTIME_ADMIN = os.environ.get('RAGTIME_ADMIN')
     RAGTIME_MAIL_SUBJECT_PREFIX = 'Ragtime —'
-    RAGTIME_MAIL_SENDER = 'Ragtime Admin <ragtime.incorporated@gmail.com'
+    RAGTIME_MAIL_SENDER = f'Ragtime Admin <{RAGTIME_ADMIN}>'
 
     RAGTIME_COMPS_PER_PAGE = 20
 

@@ -50,7 +50,7 @@ class EditProfileAdminForm(FlaskForm):
 
 class CompositionForm(FlaskForm):
     """What the form DATA is"""
-    release_type = SelectField("Release Type", coerce=int, validators=[DataRequired()])
+    release_type = SelectField("Release Type", coerce=int, default=ReleaseType.SINGLE, validators=[DataRequired()])
     title = StringField("Title")
     description = TextAreaField("Tell us about your composition")
     submit = SubmitField("Submit")

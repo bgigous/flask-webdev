@@ -1,6 +1,8 @@
+import bleach
 import hashlib
+import re
 from datetime import datetime
-from flask import current_app
+from flask import current_app, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as WebSerializer
@@ -204,6 +206,32 @@ class Composition(db.Model):
     description_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    # TODO: what if we have a duplicate?
+    slug = db.Column(db.String(128), unique=True)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+
+    @staticmethod
+    def on_changed_description(target, value, oldvalue, initiator):
+        allowed_tags = ['a']
+        regex_str = r"@(\b[\w.]*\b)"
+        matches = re.findall(regex_str, value, flags=re.M|re.I)
+        for username in matches:
+            # TODO some complicated regex stuff I need to explain
+            user_link = url_for('main.user', username=username, _external=True)
+            value = value.replace(f"@{username}", f'<a href="{user_link}">@{username}</a>')
+        html = bleach.linkify(bleach.clean(value, tags=allowed_tags, strip=True))
+        target.description_html = html
+
+    def generate_slug(self):
+        self.slug = f"{self.id}-" + re.sub(r'[^\w]+', '-', self.title.lower())
+        db.session.add(self)
+        db.session.commit()
+
+
+db.event.listen(Composition.description, 'set', Composition.on_changed_description)
 
 
 login_manager.anonymous_user = AnonymousUser

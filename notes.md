@@ -397,7 +397,15 @@ Also, I forgot `lazy='dynamic'` and I don't know how to explain. And I think in 
 
 Now that we've updated User Profile, migration
 
+"ERROR database is not up to date" WHAT?!
+
+https://stackoverflow.com/a/53593914 THIS ANSWER YAY!
+
 **homework idea add field to reconfirm a different email but where you have to put password in first**
+
+Epiphany: istances of database models get ids if they are new AFTER they get committed
+
+Generated all slugs correctly and it loaded everything back again! yay
 
 
 Rough Time Breakdown

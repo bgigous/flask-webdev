@@ -1,4 +1,4 @@
-from flask import session, render_template, redirect, url_for, flash, current_app, request
+from flask import session, render_template, redirect, url_for, flash, current_app, request, abort
 from flask_login import login_required, current_user
 from . import main
 from .forms import NameForm, EditProfileForm, EditProfileAdminForm, CompositionForm
@@ -17,9 +17,10 @@ def home():
                                   description=form.description.data,
                                   # database needs a real User object
                                   artist=current_user._get_current_object())
-        print(form.release_type.choices[form.release_type.data])
         db.session.add(composition)
         db.session.commit()
+        # must be generated after first commit
+        composition.generate_slug()
         return redirect(url_for('.home'))
     # page number to render, from request's query string 'page',
     # with default of first page (1), and if type can't be int,
@@ -44,6 +45,37 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     compositions = user.compositions.order_by(Composition.timestamp.desc()).all()
     return render_template('user.html', user=user, compositions=compositions)
+
+
+@main.route('/composition/<slug>')
+def composition(slug):
+    composition = Composition.query.filter_by(slug=slug).first_or_404()
+    # Use list so we can pass to _compositions template
+    return render_template('composition.html', compositions=[composition])
+
+
+@main.route('/edit/<slug>', methods=["GET", "POST"])
+@login_required
+def edit_composition(slug):
+    composition = Composition.query.filter_by(slug=slug).first_or_404()
+    if current_user != composition.artist and \
+            not current_user.can(Permission.ADMIN):
+        abort(403)
+    form = CompositionForm()
+    if form.validate_on_submit():
+        composition.release_type = form.release_type.data
+        composition.title = form.title.data
+        composition.description = form.description.data
+        # regenerate in case the title changed
+        composition.generate_slug()
+        db.session.add(composition)
+        db.session.commit()
+        flash("Your composition was updated!")
+        return redirect(url_for('.composition', slug=composition.slug))
+    form.release_type.data = composition.release_type
+    form.title.data = composition.title
+    form.description.data = composition.description
+    return render_template('edit_composition.html', form=form)
 
 
 @main.route('/edit-profile', methods=['GET', 'POST'])

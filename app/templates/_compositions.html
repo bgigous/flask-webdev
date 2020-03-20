@@ -15,8 +15,31 @@
             </a>
         </div>
         <div class="composition-release-type">{{ composition.release_type }}</div>
-        <div class="composition-title">{{ composition.title }}</div>
-        <div class="composition-description">{{ composition.description }}</div>
+        <div class="composition-title">
+            <a href="{{ url_for('.composition', slug=composition.slug) }}">
+                {{ composition.title }}
+            </a>
+        </div>
+        <div class="composition-description">
+            {% if composition.description_html %}
+            {# | safe tells Jinja2 not to sanitize any html from value #}
+            {{ composition.description_html | safe }}
+            {% else %}
+            {{ composition.description }}
+            {% endif %}
+        </div>
+        <div class="post-footer">
+            {% if current_user == composition.artist %}
+            <a href="{{ url_for('.edit_composition', slug=composition.slug) }}">
+                <span class="label label-primary">Edit</span>
+            </a>
+            {% endif %}
+            {% if current_user.is_administrator() %}
+            <a href="{{ url_for('.edit_composition', slug=composition.slug) }}">
+                <span class="label label-danger">Edit as Admin</span>
+            </a>
+            {% endif %}
+        </div>
     </li>
     {% endfor %}
 </ul>

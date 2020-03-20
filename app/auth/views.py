@@ -6,6 +6,10 @@ from ..email import send_email
 from ..models import User
 from .. import db
 
+# TODO: Figure out why it logs me in randomly
+# Could be because user_loader works even if I wipe the db then
+# reload all the fake stuff again with a different user
+# (my fave is tammy89)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
