@@ -1,4 +1,4 @@
-In this course, you will be programming in Python to build an app using the Flask Web Application framework. Specifically, you'll build a music sharing social networking app from start to finish.
+In this course, you will be programming in Python to build an app using the Flask Web Application framework. Specifically, you'll build a music sharing social networking app called Ragtime from start to finish.
 
 You'll need to feel comfortable with the Python language, and the course assumes you have some knowledge and experience of packages, modules, functions, decorators, and object oriented programming in general. However, you won't need any knowledge about Flask to be able to learn the material in this course.
 

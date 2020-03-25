@@ -15,9 +15,11 @@ Now you might be looking at all those files and folders, and you're wondering wh
   - `templates` folder - Basically this is all the HTML that defines the structure of the website
 - `deployment` folder - This defines how microblog is configured for when it gets deployed (to the site you just tried out previously!)
 - `migrations` folder - This folder contains scripts for upgrading (and downgrading) the database as the site gets developed
+- `config.py` - Where configuration options for the Microblog app get set, like database and email options
+- `microblog.py` - The web app gets instantiated here and becomes the Flask application instance
 
 So go ahead, be curious. But don't get too lost, because remember, all of it will be addressed in the course. As you explore, make sure you click the link to the file or folder itself, and not the commit message to the right of it.
 
-![Pic to show just that](../images/code_folder.png)
+![Pic to show just that](../images/code_folder_circled.png)
 
-That's it! Right here in the __ folders and __ files is an entire web app. In the next section, you'll try to actually build this web app yourself!
+That's it! Right here in the __ folders and __ files is an entire web app. The amazing part? We can actually go much smaller: an app in only *one* file. In the next section, you'll actually build this web app yourself!
