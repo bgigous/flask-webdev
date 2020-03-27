@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-  return "Hello Web World!"
+    return "Hello Web World!"
 
 app.run(host='0.0.0.0', port=8080)
 ```
@@ -19,5 +19,7 @@ app.run(host='0.0.0.0', port=8080)
 [Repl.it coder thing]
 
 Did it work? If so, then _HOLY FLASK_ you just make your first Flask website! If you haven't already, you could even try making the page say something else. ;)
+
+[//]: # (Hmm, I know I probably shouldn't just skip over this, but I'll cover it again in section 5 (or I won't and I could skip over it there? Hmmmm.))
 
 But I'm sure you're anxious to get to the *real stuff*. No problem, but we'll have to do just a bit of setup first, but then after that, you'll be all set to start the real training, so let's move on!

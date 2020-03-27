@@ -13,4 +13,6 @@ Setup should be pretty straightforward. Before you get started with development,
 To install suggestions, look for the extensions icon:
 ![VSCode Extensions](../images/extensions-view-icon.png)
 
+[//]: # (More to add on the layout)
+
 Then, once you've got VSCode running, you can go to `File -> Open Folder`, then navigate to your `flask-webdev` repository and open it up! In the next section, you'll add some code to accompany your lonely `README.md` file.
