@@ -10,9 +10,11 @@ Setup should be pretty straightforward. Before you get started with development,
 
 [//]: # (Some more suggestions?)
 
-To install suggestions, look for the extensions icon:
+To install any of these suggested extensions, look for the extensions icon:
 ![VSCode Extensions](../images/extensions-view-icon.png)
+
+There's also a file auto save feature in VSCode's settings. To toggle it, head to `File -> Preferences -> Settings...` and search for "Files: Auto Save".
 
 [//]: # (More to add on the layout)
 
-Then, once you've got VSCode running, you can go to `File -> Open Folder`, then navigate to your `flask-webdev` repository and open it up! In the next section, you'll add some code to accompany your lonely `README.md` file.
+In the next section, you'll add some code to accompany your lonely `README.md` file. Ready?

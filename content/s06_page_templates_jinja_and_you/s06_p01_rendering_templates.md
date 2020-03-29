@@ -1,0 +1,1 @@
+Strap yourselves in, because we're about to go from 0 to 60 in this course. Hopefully, you've gotten yourself comfortable with the basics of how to make a Flask app and 

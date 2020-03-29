@@ -27,7 +27,7 @@ Great! Now that you got the folder creation out of the way, let's move onto maki
 First, change directory to your `projects` folder and make a new git repo with the `git init` command. Now you'll have to give the new repository a name. For this project, just name it `flask-webdev`.
 
 ```bash
-cd ~/Documents/CodingNomads/`projects`
+cd ~/Documents/CodingNomads/projects
 git init flask-webdev
 ```
 
