@@ -115,6 +115,12 @@ It has an `extends` control structure, which means it's definitely a derived tem
 
 ![](../images/extends.png)
 
+#### Comments
+
+These don't actually *control* anything, but they can be useful! Instead of using `<!-- HTML comments -->`, for templates it's better to use `{# these comments #}`
+
+### What's Next
+
 Phew! Those are all the important control structure you'll need to be familiar with in this course. Don't worry, you'll see them again and again so you'll get used to them.
 
 But gosh, don't these pages just make you feel a little uneasy? Now don't get me wrong, Flask is freakin' cool, but these pages look like they came from the Internet Stone Age, back when dial-up was a thing. And to answer your next question you almost certainly have: *YES!* Of course there's an easy way to get a much prettier, modern look! Hop on over to the next lesson.

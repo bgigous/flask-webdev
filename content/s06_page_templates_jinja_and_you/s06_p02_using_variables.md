@@ -3,15 +3,15 @@
 From the last page, you know from believing your nomadic Flask course creator and all his sage, vast wisdom (who couldn't quite type the previous with a straight face) that the Jinja template engine can handle variables, as long as the Flask application does its part by passing them over. For a simple but dynamic page that does this relay, the view function would look like so:
 
 ```python
-@app.route('/user/<name>')
-def hello(name):
-    return render_template("user.html", name=name)
+@app.route('/user/<username>')
+def user(username):
+    return render_template("user.html", username=username)
 ```
 
 Crack open a new `user.html` template file and crack your knuckles 'cause here's the template content:
 
 ```html
-<h1>Hello, {{ name }}!</h1>
+<h1>Hello, {{ username }}!</h1>
 ```
 
 Wuzzat?! Looks like some weird HTML, but this is how Jinja likes its variables prepared for breakfast. Er, to render. The double curly brackets `{{}}` tell Jinja that whatever's inside them is a placeholder that should have a value assigned to it, and to render the template with that value instead. If you head to `localhost:5000/user/Tom` in your browser, you'll be greeted as Tom even though that's probably not your name!
@@ -38,6 +38,8 @@ Oh, and one more thing! Jinja also includes filters which can go after a variabl
 ```
 
 `upper` is just one filter to choose from, but here are some others:
+
+![](../images/placeholder.png)
 
 [//]: # (TODO: Insert table)
 

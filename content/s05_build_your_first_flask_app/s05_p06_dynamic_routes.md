@@ -13,12 +13,12 @@ All those users pages have a similar structure, where you can see the user's pic
 Now here's something for you to play around with. To make a *dynamic route* in Flask, you surround the dynamic part of the **path** in angle brackets. Let's see an example:
 
 ```python
-@app.route('/user/<name>')
-def hello(name):
-    return f"Hello, {name}!"
+@app.route('/user/<username>')
+def user(username):
+    return f"Hello, {username}!"
 ```
 
-Go ahead and try this in your `hello.py` if you'd like, or you could also practice bring-up of another mini Flask app. So what's going on here? When Flask determines that there's angle brackets surround part(s) of the path, it expects to see the same token in the list of arguments for the view function. For this example, when we navigate to `localhost:5000/user/Tom`, we'll see "Hello, Tom!"
+Go ahead and try this in your `hello.py`. So what's going on here? When Flask determines that there's angle brackets surround part(s) of the path, it expects to see the same token in the list of arguments for the view function. For this example, when we navigate to `localhost:5000/user/Tom`, we'll see "Hello, Tom!"
 
 Now try a few of your own dynamic routes. Try these suggestions:
 

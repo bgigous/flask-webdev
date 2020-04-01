@@ -40,12 +40,12 @@ Let 'er rip! Run the app with `flask run` and watch as you get the same output. 
 
 While a template is just HTML, it's also a little more than that with Jinja. To help demonstrate, let's make another route, this time a dynamic one. Feel free to use one you might have made before in order to complete this next part.
 
-The `render_tempalate()` has more power than it might look. This function utilizes the well known Pythonism known as *keyword arguments*, often seen as `**kwargs` in the wild. To call the function in the previous `hello()` function example and still get the same effect, you'd do this:
+The `render_tempalate()` has more power than it might look. This function utilizes the well known Pythonism known as *keyword arguments*, often seen as `**kwargs` in the wild. To call the function in the previous `user()` function example and still get the same effect, you'd do this:
 
 ```python
-@app.route('/user/<name>')
-def hello(name):
-    return render_template("user.html", name=name)
+@app.route('/user/<username>')
+def user(username):
+    return render_template("user.html", username=username)
 ```
 
 In this example, we indicate which template we want Jinja to render and also pass in our `name` parameter along to Jinja. The `name` on the left side of the `=` is what Jinja will use as the placeholder name inside the template. The other `name` on the right side is the variable in the function scope. Now when we load the `user.html` template, we'll see—whah!? You say you haven't made such a template yet that can handle this passed-in variable? Oh dear, let's take care of that right away!
