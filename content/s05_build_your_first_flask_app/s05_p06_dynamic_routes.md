@@ -26,10 +26,11 @@ Now try a few of your own dynamic routes. Try these suggestions:
 - Make another view function that takes a numeric dynamic argument. Return the square of the number in the response
 - Try a dynamic argument with spaces and see what happens
 
-[//]: # (I have no idea what would happen for number 3 lol (yet))
+[//]: # (I have no idea what would happen for number 3 lol yet)
 
 ---
 
-Note: Some of the examples in this course won't be part of the main app, but we'll make it clear when it is or isn't.
+<div class="alert alert-warning" role="alert"><strong>Note: </strong>Some of the examples in this course won't be part of the main app, but we'll make it clear when it is or isn't.
+</div>
 
 [//]: # (To Martin: Is this a fair warning, and if so, do you have suggestions for how to indicate something is or isn't part of the main app?)

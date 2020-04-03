@@ -19,7 +19,7 @@ So when a user navigates to a webpage, like *example.com*, a *request* is sent f
 
 [//]: # (diagram here)
 
-![](../images/placeholder.png)
+![](../images/request_response.png)
 
 The first part of the address, `https://` or `http://`, is the protocol and tells the server whether the request is encrypted or not, respectively. The next part, `example.com`, is the *domain name* or *host* and tells the Internet which server to send the request *to*; in other words, the server the handles requests for website `example.com`. But neither of those really have much effect in *how* a user request is responded to by a server. Wait a sec, so what's left of our web address that *does* have an effect? There's nothing left in our example!
 

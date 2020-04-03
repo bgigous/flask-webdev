@@ -41,6 +41,7 @@ def index():
 ```
 
 This one is fun, because decorators are fun. The `app.route` decorator here, with `'/'` as its argument, translates to "whenever someone visits the root URL, call this `index()` function to return a response."
+
 Put another way, the `index()` function is a *handler* for the root URL. If the application is deployed at *www.example.com*, navigating to https://www.example.com/ with nothing else would trigger the `index()` function to be called and run on the server. Routes will be covered a little more later.
 
 [//]: # (or now? Also covering `add_url_rule` would be good)
@@ -50,12 +51,6 @@ Put another way, the `index()` function is a *handler* for the root URL. If the 
 Note: If you're not super familiar with decorators, check out <a href="https://realpython.com/primer-on-python-decorators/" target="_blank">this Real Python article</a> on the subject.
 
 -----
-
-Once you've written it all, your file should look like this:
-
-[//]: # (Insert image)
-
-![](../images/placeholder.png)
 
 Okay, that wasn't too bad, right? Make sure you save the file and pat yourself on the back! Oh, what's that? We haven't even really done anything except write a 7-or-so line file, you say? Yes yes, we'll get to that next. (Web development requires patience, grasshopper!)
 

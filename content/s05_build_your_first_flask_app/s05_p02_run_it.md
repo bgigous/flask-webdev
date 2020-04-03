@@ -45,16 +45,13 @@ With debug mode enabled, you'll get to utilize two very convenient modules:
 - **Reloader** - It's pretty nifty. With this, Flask will scan all your source files for changes and will automatically restart the server if it detects that any of them are modified. That means whenever you have a server running and you modify a line or two in a file and save it, you'll see from your terminal that your server will restart, which means it has already accounted for the changes you made. Told ya it was nifty!
 - **Debugger** - Whenever one of those changes might break your web app, Flask has this other cool feature that will display whatever error it encountered *right in your webpage*. That is, instead of an ugly page that gives you nothing to go by to fix the error. Even more swell is the fact that you can interact with this page and see the source code that may have caused the problem.
 
------
-
-Note: All this boring command line stuff is actually pretty important. Flask's debug modes even screwed me up when I was developing! So if it helps you, definitely write some of this down to commit it to memory. It may be helpful to bookmark this page, too.
+<div class="alert alert-warning" role="alert"><strong>Note: </strong>All this boring command line stuff is actually pretty important. Flask's debug modes even screwed me up when I was developing! So if it helps you, definitely write some of this down to commit it to memory. It may be helpful to bookmark this page, too.
+</div>
 
 You can also get some documentation for Flask commands with `--help`, for example, `flask --help` or `flask run --help`
 
------
+<div class="alert alert-warning" role="alert"><strong>Note: </strong>While you *can* still use `app.run()` for bringing up your Flask app, keep in mind that setting `FLASK_APP`, `FLASK_DEBUG`, and `FLASK_ENV` environment variables won't have any effect if you go that route (pun intended).
+</div>
 
-Note: While you *can* still use `app.run()` for bringing up your Flask app, keep in mind that setting `FLASK_APP`, `FLASK_DEBUG`, and `FLASK_ENV` environment variables won't have any effect if you go that route (pun intended).
-
------
 
 Now that you've learned the nitty-gritty of development using Flask, and the grit it takes to be a Flask developer (which isn't that bad, really), you're set to keep going with your app. But first, an existential question... what are URLs, anyway?

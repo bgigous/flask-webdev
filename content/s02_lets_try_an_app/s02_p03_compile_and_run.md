@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
 [//]: # (TODO: Explain basic parts)
 
-<iframe height="400px" width="100%" src="https://repl.it/@gigabot/nanoblog?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
+<iframe height="800px" width="100%" src="https://repl.it/@gigabot/nanoblog?lite=true" scrolling="no" frameborder="no" allowtransparency="true" allowfullscreen="true" sandbox="allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-modals"></iframe>
 
 Did it work? If so, then _HOLY FLASK_ you just make your first Flask website! If you haven't already, you could even try making the page say something else. ;)
 

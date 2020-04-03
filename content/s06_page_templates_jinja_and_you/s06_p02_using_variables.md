@@ -16,7 +16,7 @@ Crack open a new `user.html` template file and crack your knuckles 'cause here's
 
 Wuzzat?! Looks like some weird HTML, but this is how Jinja likes its variables prepared for breakfast. Er, to render. The double curly brackets `{{}}` tell Jinja that whatever's inside them is a placeholder that should have a value assigned to it, and to render the template with that value instead. If you head to `localhost:5000/user/Tom` in your browser, you'll be greeted as Tom even though that's probably not your name!
 
-![](../images/placeholder.png)
+![](../images/Tom.png)
 
 ### Flexible Placeholders
 
@@ -39,8 +39,14 @@ Oh, and one more thing! Jinja also includes filters which can go after a variabl
 
 `upper` is just one filter to choose from, but here are some others:
 
-![](../images/placeholder.png)
-
-[//]: # (TODO: Insert table)
+| Filter name    | Description                                   |
+| -------------- | --------------------------------------------- |
+| `capitalize`   | Uppercase the first character                 |
+| `lower`        | Lowercase all characters                      |
+| `safe`         | Render value without applying escaping        |
+| `striptags`    | Remove any HTML tags before rendering         |
+| `title`        | Return a titlecased version of the value      |
+| `trim`         | Strip leading and trailing characters         |
+| `upper`        | Uppercase all characters                      |
 
 You just learned about variables in Jinja, but don't you want more *control* over your templates? You're in luck, because in the next section, you'll apply control structures to your templates.
