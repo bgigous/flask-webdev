@@ -30,7 +30,20 @@ Remember that base template you made in the last lesson? Well, once Flask-Bootst
 
 The Bootstrap base template has lots of template `block`s, and many of these blocks are used by Flask-Bootstrap itself.
 
-![table of blocks](../images/placeholder.png)
+| Block name     | Description                                   |
+| -------------- | --------------------------------------------- |
+| `body`         | Contents of the `<body>` tag                  |
+| `body_attribs` | Attributes in the `<body>` tag                |
+| `content`      | Page content                                  |
+| `doc`          | The entire HTML document                      |
+| `head`         | Contents of the `<head>` tag                  |
+| `html`         | Contents of the `<html>` tag                  |
+| `html_attribs` | Attributes in the `<html>` tag                |
+| `metas`        | The list of `<meta>` tags                     |
+| `navbar`       | Navigation bar                                |
+| `scripts`      | Java declarations at bottom of document       |
+| `styles`       | CSS definitions                               |
+| `title`        | Contents of the `<title>` tag                 |
 
 What does that mean for you? It means you can save yourself lots of styling headache by putting in a few of these blocks and then (very important) using `{{ super() }}` plus your additional content.
 
@@ -99,7 +112,7 @@ Remember that `user()` view function you made that prints a custom message depen
 
 This new `user.html` template extends the `base.html` template, which itself extends the `bootstrap/base.html` and adds to some of its `block`s. What will this template show when it's rendered? If you've been following along with the previous examples, the title will show `Ragtime - User <username>`, There will be a navigation bar at the top, *and* it will greet whatever username is in the URL path. And that's only in a few lines of Jinja-style HTML!
 
-![image of user page](../images/placeholder.png)
+![image of user page](../images/user_page.png)
 
 Hopefully you've been holding tight onto your own bootstraps, as that was a lot to take in. You'll reinforce all that you've learned in this section in the next lesson and throughout the course. So giddy-up and let's get a move on!
 
