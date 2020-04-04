@@ -1,14 +1,14 @@
 [//]: # (Will add this page to introduce dynamic routes, which is useful for the templates section)
 
-How'd you feel about the basics of routes? There's much more, but for now let's introduce you to dynamic routes, then you can take a shot at making a few more yourself for some practice. Haven't you ever noticed that when browsing SoundCloud or Facebook, whenever you checked out some weirdo's profile that you could see something like these in the address?
+How'd you feel about the basics of routes? There's much more, but for now let's introduce you to dynamic routes, then you can take a shot at making a few more yourself for some practice. Haven't you ever noticed that when browsing SoundCloud or Facebook, whenever you checked out some random guy's profile that you could see something like these in the address?
 
 ```
-www.example.com/user/weirdo
-www.example.com/user/other_weirdo
+www.example.com/user/random_guy
+www.example.com/user/someones_grandma
 www.example.com/user/Tom
 ```
 
-All those users pages have a similar structure, where you can see the user's pic, a bit of info, and some stuff they decided to upload or share. In these types of pages, the underlying *template* contains that *static* structure, and then loads the content *dynamically* based on the user (weirdo, other_weirdo, or Tom). There are other kinds of dynamic pages, too.
+All those users pages have a similar structure, where you can see the user's pic, a bit of info, and some stuff they decided to upload or share. In these types of pages, the underlying *template* contains that *static* structure, and then loads the content *dynamically* based on the user (random_guy, someones_grandma, or Tom). There are other kinds of dynamic pages, too.
 
 Now here's something for you to play around with. To make a *dynamic route* in Flask, you surround the dynamic part of the **path** in angle brackets. Let's see an example:
 
