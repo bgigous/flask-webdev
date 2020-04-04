@@ -50,7 +50,7 @@ With debug mode enabled, you'll get to utilize two very convenient modules:
 
 You can also get some documentation for Flask commands with `--help`, for example, `flask --help` or `flask run --help`
 
-<div class="alert alert-warning" role="alert"><strong>Note: </strong>While you *can* still use `app.run()` for bringing up your Flask app, keep in mind that setting `FLASK_APP`, `FLASK_DEBUG`, and `FLASK_ENV` environment variables won't have any effect if you go that route (pun intended).
+<div class="alert alert-warning" role="alert"><strong>Note: </strong>While you *can* still use <code>app.run()</code> for bringing up your Flask app, keep in mind that setting <code>FLASK_APP</code>, <code>FLASK_DEBUG</code>, and <code>FLASK_ENV</code> environment variables won't have any effect if you go that route (pun intended).
 </div>
 
 
