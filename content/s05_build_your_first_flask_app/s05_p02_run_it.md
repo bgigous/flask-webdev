@@ -1,14 +1,14 @@
 ### Running The Code Again, With A Twist
 
-You now have your 7-or-so line `hello.py` file and I'm sure you're wondering what to do with it and how to get running as a web app. It's not quite as simple as using an online development tool like Repl.it, since now we're in a real web development scenario, but this page will get you on your way!
+You now have your 7-or-so line `hello.py` file and I'm sure you're wondering what to do with it and how to get running as a web app. It's not quite as simple as using an online development tool like Repl.it, since now you're in a real web development scenario, but this page will get you on your way!
 
-You may even be thinking, "Hey wait a sec, didn't we leave something out in that file? That `app.run()` thing?" (Thinking in code, I love it!)
+You may even be thinking, "Hey wait a sec, didn't you leave something out in that file? That `app.run()` thing?" (Thinking in code, I love it!)
 
 Ah, you'd be right. There was such a `app.run()` function in the example a couple sections ago, but you don't actually need it this time. Isadora might be a fortune teller, but can she see why developers love web development using Flask?
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/rieerSvSYWM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Well one, it's because Flask can get them up and running lickety-split (as you've seen), but another is because Flask makes it *convenient* to develop with. We truly have a working app inside `hello.py`, but for now it is just text. Even running `python hello.py` will do seemingly nothing. But in fact, it has its very own development web server hidden inside, all waiting to come out with a simple command! Not even a fortune teller could've figured that out at first glance.
+Well one, it's because Flask can get them up and running lickety-split (as you've seen), but another is because Flask makes it *convenient* to develop with. You truly have a working app inside `hello.py`, but for now it is just text. Even running `python hello.py` will do seemingly nothing. But in fact, it has its very own development web server hidden inside, all waiting to come out with a simple command! Not even a fortune teller could've figured that out at first glance.
 
 To be able to kick off this web server, all that Flask needs from you is for you to set the `FLASK_APP` environment variable. This setting let's Flask know the application instance that you want to test, debug, or otherwise just appreciate is in the file specified. With that said, in your CLI, type and execute the following (keeping the spacing as it is):
 

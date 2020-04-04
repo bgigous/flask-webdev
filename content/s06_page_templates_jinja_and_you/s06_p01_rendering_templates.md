@@ -1,6 +1,6 @@
 ### Templates
 
-Hopefully, you've gotten yourself comfortable with the basics of how to make a Flask app and how to go about making basic routes. But strap yourselves in, as you're about to go from 0 to 60 in this course. We'll be picking up the pace; there won't be full code examples, but there will be code snippets with enough information to guide you through to making a full Flask app. As long as you read carefully ask for guidance from your mentor, you should be just fine!
+Hopefully, you've gotten yourself comfortable with the basics of how to make a Flask app and how to go about making basic routes. But strap yourselves in, as you're about to go from 0 to 60 in this course. You'll be picking up the pace; there won't be full code examples, but there will be code snippets with enough information to guide you through to making a full Flask app. As long as you read carefully ask for guidance from your mentor, you should be just fine!
 
 [//]: # (At this point, I imagine we can cut off the "free" access and start hiding this content for non-course purchasers)
 
@@ -34,7 +34,7 @@ def index():
 
 With the `render_template()` function, all you need to do is indicate the path to the template relative to you `templates` folder, which is simply `"index.html"`. When a request is received for the index page and `render_template()` is called, Flask will enlist the help of Jinja2 to render the template.
 
-Let 'er rip! Run the app with `flask run` and watch as you get the same output. A little boring, huh? Just wait, we're gonna go *dynamic*.
+Let 'er rip! Run the app with `flask run` and watch as you get the same output. A little boring, huh? Just wait, you're gonna go *dynamic*.
 
 #### HTML++
 
@@ -48,4 +48,4 @@ def user(username):
     return render_template("user.html", username=username)
 ```
 
-In this example, we indicate which template we want Jinja to render and also pass in our `name` parameter along to Jinja. The `name` on the left side of the `=` is what Jinja will use as the placeholder name inside the template. The other `name` on the right side is the variable in the function scope. Now when we load the `user.html` template, we'll see—whah!? You say you haven't made such a template yet that can handle this passed-in variable? Oh dear, let's take care of that right away!
+In this example, you indicate which template you want Jinja to render and also pass in our `name` parameter along to Jinja. The `name` on the left side of the `=` is what Jinja will use as the placeholder name inside the template. The other `name` on the right side is the variable in the function scope. Now when you load the `user.html` template, you'll see—whah!? You say you haven't made such a template yet that can handle this passed-in variable? Oh dear, let's take care of that right away!

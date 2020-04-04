@@ -14,7 +14,7 @@ Python wouldn't be Python without its conditionals and control flow. And it turn
 {% endif %}
 ```
 
-Now we can know who's looking at the page! Unless they don't tell us...
+Now you can know who's looking at the page! Unless they don't tell us...
 
 #### `for`
 

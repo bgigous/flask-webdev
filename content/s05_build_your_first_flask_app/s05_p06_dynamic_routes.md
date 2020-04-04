@@ -18,7 +18,7 @@ def user(username):
     return f"Hello, {username}!"
 ```
 
-Go ahead and try this in your `hello.py`. So what's going on here? When Flask determines that there's angle brackets surround part(s) of the path, it expects to see the same token in the list of arguments for the view function. For this example, when we navigate to `localhost:5000/user/Tom`, we'll see "Hello, Tom!"
+Go ahead and try this in your `hello.py`. So what's going on here? When Flask determines that there's angle brackets surrounding part(s) of the path, it expects to see the same token in the list of arguments for the view function. For this example, when you navigate to `localhost:5000/user/Tom`, you'll see "Hello, Tom!"
 
 Now try a few of your own dynamic routes. Try these suggestions:
 
@@ -30,7 +30,7 @@ Now try a few of your own dynamic routes. Try these suggestions:
 
 ---
 
-<div class="alert alert-warning" role="alert"><strong>Note: </strong>Some of the examples in this course won't be part of the main app, but we'll make it clear when it is or isn't.
+<div class="alert alert-warning" role="alert"><strong>Note: </strong>Some of the examples in this course won't be part of the main app, but you'll make it clear when it is or isn't.
 </div>
 
 [//]: # (To Martin: Is this a fair warning, and if so, do you have suggestions for how to indicate something is or isn't part of the main app?)
