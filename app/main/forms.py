@@ -60,3 +60,8 @@ class CompositionForm(FlaskForm):
         self.release_type.choices = [(ReleaseType.SINGLE, 'Single'),
                                      (ReleaseType.EXTENDED_PLAY, 'EP'),
                                      (ReleaseType.ALBUM, 'Album')]
+
+
+class CommentForm(FlaskForm):
+    body = StringField('', validators=[DataRequired()])
+    submit = SubmitField('Submit')

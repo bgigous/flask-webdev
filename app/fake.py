@@ -2,7 +2,7 @@ from random import randint
 from sqlalchemy.exc import IntegrityError
 from faker import Faker
 from . import db
-from .models import User, Composition
+from .models import User, Composition, Comment
 
 def users(count=20):
     fake = Faker()
@@ -25,6 +25,7 @@ def users(count=20):
             # in this case, the data added previously is rolled back (removed)
             db.session.rollback()
 
+
 def compositions(count=200):
     fake = Faker()
     user_count = User.query.count()
@@ -41,3 +42,18 @@ def compositions(count=200):
     db.session.commit()
     for c in Composition.query.all():
         c.generate_slug()
+
+
+def comments(count=1000):
+    fake = Faker()
+    composition_count = Composition.query.count()
+    user_count = User.query.count()
+    for i in range(count):
+        u = User.query.offset(randint(0, user_count - 1)).first()
+        c = Composition.query.offset(randint(0, composition_count - 1)).first()
+        comment = Comment(body=fake.text(),
+                          timestamp=fake.past_date(),
+                          artist=u,
+                          composition=c)
+        db.session.add(c)
+    db.session.commit()

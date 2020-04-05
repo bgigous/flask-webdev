@@ -21,6 +21,7 @@ class Permission:
     """
     FOLLOW = 1
     REVIEW = 2
+    COMMENT = REVIEW
     PUBLISH = 4
     MODERATE = 8
     ADMIN = 16
@@ -28,12 +29,6 @@ class Permission:
 
 class ReleaseType:
     """
-    Permission model for defining permissions of the app
-        FOLLOW - User can follow other users
-        REVIEW - User can write reviews for compositions
-        PUBLISH - Uesr can publish compositions
-        MODERATE - User can moderate reviews (edit, delete)
-        ADMIN - User can do everything
     """
     SINGLE = 0
     EXTENDED_PLAY = 1
@@ -139,6 +134,7 @@ class User(UserMixin, db.Model):
                                 backref=db.backref('following', lazy='joined'),
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
+    comments = db.relationship('Comment', backref='artist', lazy='dynamic')
 
 
     def __init__(self, **kwargs):
@@ -270,6 +266,7 @@ class Composition(db.Model):
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     # TODO: what if we have a duplicate?
     slug = db.Column(db.String(128), unique=True)
+    comments = db.relationship('Comment', backref='composition', lazy='dynamic')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -295,6 +292,25 @@ class Composition(db.Model):
 
 db.event.listen(Composition.description, 'set', Composition.on_changed_description)
 
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    disabled = db.Column(db.Boolean, default=False)
+    artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    composition_id = db.Column(db.Integer, db.ForeignKey('compositions.id'))
+
+    @staticmethod
+    def on_changed_body(target, value, oldvalue, initiator):
+        allowed_tags = ['a']
+        target.body_html = bleach.linkify(bleach.clean(
+            value, tags=allowed_tags, strip=True))
+
+
+db.event.listen(Comment.body, 'set', Comment.on_changed_body)
 
 login_manager.anonymous_user = AnonymousUser
 

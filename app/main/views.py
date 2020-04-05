@@ -1,9 +1,9 @@
 from flask import session, render_template, redirect, url_for, flash, current_app, request, abort, make_response
 from flask_login import login_required, current_user
 from . import main
-from .forms import NameForm, EditProfileForm, EditProfileAdminForm, CompositionForm
+from .forms import NameForm, EditProfileForm, EditProfileAdminForm, CompositionForm, CommentForm
 from .. import db
-from ..models import User, Role, Permission, Composition
+from ..models import User, Role, Permission, Composition, Comment
 from ..email import send_email
 from ..decorators import admin_required, permission_required
 
@@ -59,11 +59,34 @@ def user(username):
     return render_template('user.html', user=user, compositions=compositions)
 
 
-@main.route('/composition/<slug>')
+@main.route('/composition/<slug>', methods=['GET', 'POST'])
 def composition(slug):
     composition = Composition.query.filter_by(slug=slug).first_or_404()
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(body=form.body.data,
+                          composition=composition,
+                          artist=current_user._get_current_object())
+        db.session.add(comment)
+        db.session.commit()
+        flash('Comment submission successful.')
+        return redirect(url_for('.composition', slug=composition.slug, page=-1))
+    page = request.args.get('page', 1, type=int)
+    if page == -1:
+        # Calculate last page number
+        page = (composition.comments.count() - 1) // \
+               current_app.config['RAGTIME_COMMENTS_PER_PAGE'] + 1
+    pagination = composition.comments.order_by(Comment.timestamp.asc()).paginate(
+        page,
+        per_page=current_app.config['RAGTIME_COMMENTS_PER_PAGE'],
+        error_out=False)
+    comments = pagination.items
     # Use list so we can pass to _compositions template
-    return render_template('composition.html', compositions=[composition])
+    return render_template('composition.html',
+                           compositions=[composition],
+                           form=form,
+                           comments=comments,
+                           pagination=pagination)
 
 
 @main.route('/edit/<slug>', methods=["GET", "POST"])
@@ -241,4 +264,35 @@ def show_followed():
 @login_required
 @permission_required(Permission.MODERATE)
 def moderate():
-    return "For review moderators only!"
+    page = request.args.get('page', 1, type=int)
+    pagination = Comment.query.order_by(Comment.timestamp.desc()).paginate(
+        page,
+        per_page=current_app.config['RAGTIME_COMMENTS_PER_PAGE'],
+        error_out=False)
+    comments = pagination.items
+    return render_template('moderate.html',
+                           comments=comments,
+                           pagination=pagination,
+                           page=page)
+
+
+@main.route('/moderate/enable/<int:id>')
+@login_required
+@permission_required(Permission.MODERATE)
+def moderate_enable(id):
+    comment = Comment.query.get_or_404(id)
+    comment.disable = False
+    db.session.add(comment)
+    return redirect(url_for('.moderate',
+                            page=request.args.get('page', 1, type=int)))
+
+
+@main.route('/moderate/disable/<int:id>')
+@login_required
+@permission_required(Permission.MODERATE)
+def moderate_disable(id):
+    comment = Comment.query.get_or_404(id)
+    comment.disable = True
+    db.session.add(comment)
+    return redirect(url_for('.moderate',
+                            page=request.args.get('page', 1, type=int)))
