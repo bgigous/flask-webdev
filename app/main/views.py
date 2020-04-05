@@ -1,4 +1,4 @@
-from flask import session, render_template, redirect, url_for, flash, current_app, request, abort
+from flask import session, render_template, redirect, url_for, flash, current_app, request, abort, make_response
 from flask_login import login_required, current_user
 from . import main
 from .forms import NameForm, EditProfileForm, EditProfileAdminForm, CompositionForm
@@ -26,16 +26,28 @@ def home():
     # with default of first page (1), and if type can't be int,
     # return default value
     page = request.args.get('page', 1, type=int)
+    show_followed = False
+    if current_user.is_authenticated:
+        show_followed = bool(request.cookies.get('show_followed', ''))
+    if show_followed:
+        query = current_user.followed_compositions
+    else:
+        query = Composition.query
     # Which page of results do you want? We'll display <per_page> results, and won't
     # throw an error if you go outside how many pages we have!
-    pagination = Composition.query.order_by(Composition.timestamp.desc()).paginate(
-        page, per_page=current_app.config['RAGTIME_COMPS_PER_PAGE'], error_out=False)
+    # NOTE: We may use a different query if show followed is true
+    #pagination = Composition.query.order_by(Composition.timestamp.desc()).paginate(
+    pagination = query.order_by(Composition.timestamp.desc()).paginate(
+        page,
+        per_page=current_app.config['RAGTIME_COMPS_PER_PAGE'],
+        error_out=False)
     compositions = pagination.items
     # A ?page=2 will display in address when page selected is 2
     return render_template(
         'home.html',
         form=form,
         compositions=compositions,
+        show_followed=show_followed,
         pagination=pagination
     )
 
@@ -134,7 +146,7 @@ def follow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash("That is not a valid user.")
-        return redirect(url_for('.index'))
+        return redirect(url_for('.home'))
     if current_user.is_following(user):
         flash("Looks like you are already following that user.")
         return redirect(url_for('.user', username=username))
@@ -152,7 +164,7 @@ def unfollow(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash("That is not a valid user.")
-        return redirect(url_for('.index'))
+        return redirect(url_for('.home'))
     if not current_user.is_following(user):
         flash("Looks like you never followed that user in the first place.")
         return redirect(url_for('.user', username=username))
@@ -168,7 +180,7 @@ def followers(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash("That is not a valid user.")
-        return redirect(url_for('.index'))
+        return redirect(url_for('.home'))
     page = request.args.get('page', 1, type=int)
     pagination = user.followers.paginate(
         page,
@@ -192,7 +204,7 @@ def following(username):
     user = User.query.filter_by(username=username).first()
     if user is None:
         flash("That is not a valid user.")
-        return redirect(url_for('.index'))
+        return redirect(url_for('.home'))
     page = request.args.get('page', 1, type=int)
     pagination = user.following.paginate(
         page,
@@ -207,6 +219,22 @@ def following(username):
                            endpoint='.followers',
                            pagination=pagination,
                            follows=following)
+
+
+@main.route('/all')
+@login_required
+def show_all():
+    resp = make_response(redirect(url_for('.home')))
+    resp.set_cookie('show_followed', '', max_age=30*24*60*60) # 30 days
+    return resp
+
+
+@main.route('/followed')
+@login_required
+def show_followed():
+    resp = make_response(redirect(url_for('.home')))
+    resp.set_cookie('show_followed', '1', max_age=30*24*60*60) # 30 days
+    return resp
 
 
 @main.route('/moderate')

@@ -157,9 +157,18 @@ class User(UserMixin, db.Model):
 
         if self.email is not None and self.avatar_hash is None:
             self.avatar_hash = self.email_hash()
+        self.follow(self)
 
     def __repr__(self):
         return f'<User {self.username}>'
+
+    @staticmethod
+    def add_self_follows():
+        for user in User.query.all():
+            if not user.is_following(user):
+                user.follow(user)
+                db.session.add(user)
+                db.session.commit()
 
     @property
     def password(self):
@@ -233,6 +242,11 @@ class User(UserMixin, db.Model):
             return False
         return self.followers.filter_by(
             follower_id=user.id).first() is not None
+
+    @property
+    def followed_compositions(self):
+        return Composition.query.join(Follow, Follow.following_id == Composition.artist_id)\
+            .filter(Follow.follower_id == self.id)
 
 
 class AnonymousUser(AnonymousUserMixin):

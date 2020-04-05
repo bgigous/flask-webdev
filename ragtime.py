@@ -1,6 +1,6 @@
 import os
 from app import create_app, db, mail, fake
-from app.models import User, Role, Permission, Composition
+from app.models import User, Role, Permission, Composition, Follow
 from flask_migrate import Migrate
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
@@ -14,4 +14,5 @@ def make_shell_context():
                 Role=Role,
                 Permission=Permission,
                 Composition=Composition,
+                Follow=Follow,
                 fake=fake)

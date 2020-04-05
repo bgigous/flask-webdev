@@ -132,3 +132,7 @@ Since we're working with two one-to-many relationships, there's a bit more infor
 
 You'll want to display buttons for follow/unfollow, and display how many you follow or who follow you. If you view a user page, you'll also be able to see if a user follows you.
 
+
+
+### filtering by all or followed
+cookies can only be set through a response/on a response object
