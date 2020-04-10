@@ -28,7 +28,7 @@
             {{ composition.description }}
             {% endif %}
         </div>
-        <div class="post-footer">
+        <div class="compositions-footer">
             {% if current_user == composition.artist %}
             <a href="{{ url_for('.edit_composition', slug=composition.slug) }}">
                 <span class="label label-primary">Edit</span>

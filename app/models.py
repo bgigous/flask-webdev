@@ -6,8 +6,10 @@ from flask import current_app, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as WebSerializer
+from . import exceptions
 from . import db
 from . import login_manager
+from .exceptions import ValidationError
 
 
 class Permission:
@@ -245,6 +247,34 @@ class User(UserMixin, db.Model):
             .filter(Follow.follower_id == self.id)
 
 
+    def generate_auth_token(self, expiration_sec):
+        s = WebSerializer(current_app.config['SECRET_KEY'],
+                          expires_in=expiration_sec)
+        return s.dumps({'id': self.id}).decode('utf-8')
+
+
+    @staticmethod
+    def verify_auth_token(token):
+        s = WebSerializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data['id'])
+
+    # Not identical to actual User model
+    def to_json(self):
+        json_user = {
+            'url': url_for('api.get_user', id=self.id),
+            'username': self.username,
+            'last_seen': self.last_seen,
+            'compositions_url': url_for('api.get_user_compositions', id=self.id),
+            'followed_compositions_url': url_for('api.get_user_followed', id=self.id),
+            'composition_count': self.compositions.count()
+        }
+        return json_user
+
+
 class AnonymousUser(AnonymousUserMixin):
     def can(self, perm):
         return False
@@ -289,17 +319,48 @@ class Composition(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def to_json(self):
+        json_composition = {
+            'url': url_for('api.get_composition', id=self.id),
+            'release_type': self.release_type,
+            'title': self.title,
+            'description': self.description,
+            'description_html': self.description_html,
+            'timestamp': self.timestamp,
+            'artist_url': url_for('api.get_user', id=self.artist_id),
+            'comments_url': url_for('api.get_composition_comments', id=self.id),
+            'comment_count': self.comments.count()
+        }
+        return json_composition
+
+    # deserializing
+    @staticmethod
+    def from_json(json_composition):
+        release_type = json_composition.get('release_type')
+        title = json_composition.get('title')
+        description = json_composition.get('description')
+        if release_type is None:
+            raise ValidationError("Composition must have a release type")
+        if title is None:
+            raise ValidationError("Composition must have a title")
+        if description is None:
+            raise ValidationError("Composition must have a description")
+        return Composition(release_type=release_type,
+                           title=title,
+                           description=description)
+
 
 db.event.listen(Composition.description, 'set', Composition.on_changed_description)
 
 
 class Comment(db.Model):
-    __tablename__ = "comments"
+    __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     disabled = db.Column(db.Boolean, default=False)
+    # TODO change to user?
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     composition_id = db.Column(db.Integer, db.ForeignKey('compositions.id'))
 
@@ -308,6 +369,25 @@ class Comment(db.Model):
         allowed_tags = ['a']
         target.body_html = bleach.linkify(bleach.clean(
             value, tags=allowed_tags, strip=True))
+
+    def to_json(self):
+        json_comment = {
+            'url': url_for('api.get_comment', id=self.id),
+            'composition_url': url_for('api.get_composition', id=self.composition_id),
+            'body': self.body,
+            'body_html': self.body_html,
+            'timestamp': self.timestamp,
+            'artist_url': url_for('api.get_user', id=self.artist_id),
+        }
+        return json_comment
+
+    # deserializing
+    @staticmethod
+    def from_json(json_comment):
+        body = json_comment.get('body')
+        if body is None or body == "":
+            raise ValidationError("Comment must have a body")
+        return Comment(body=body)
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)

@@ -30,7 +30,7 @@ def compositions(count=200):
     fake = Faker()
     user_count = User.query.count()
     for i in range(count):
-        # assign random user to each post using offset()
+        # assign random user to each composition using offset()
         # which discards X number of results, then first() gives first of remaining
         u = User.query.offset(randint(0, user_count - 1)).first()
         c = Composition(release_type=randint(0,2),

@@ -37,6 +37,7 @@ class TestingConfig(Config):
     # development
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_TEST_URL') or \
         'sqlite://'
+    SERVER_NAME = 'localhost:5000'
 
 
 class ProductionConfig(Config):

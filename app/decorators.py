@@ -15,6 +15,9 @@ def permission_required(permission):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not current_user.can(permission):
+                import traceback
+                traceback.print_stack()
+                print(current_user)
                 abort(403)
             return f(*args, **kwargs)
         return decorated_function
