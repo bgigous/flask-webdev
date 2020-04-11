@@ -15,8 +15,9 @@ def make_shell_context():
                 Permission=Permission,
                 Composition=Composition,
                 Follow=Follow,
-                Comment=Comment)
+                Comment=Comment,)
 
+print("hello heroku!")
 
 @app.cli.command()
 def deploy():
