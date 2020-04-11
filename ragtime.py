@@ -15,8 +15,7 @@ def make_shell_context():
                 Permission=Permission,
                 Composition=Composition,
                 Follow=Follow,
-                Comment=Comment,
-                fake=fake)
+                Comment=Comment)
 
 
 @app.cli.command()
